@@ -6,7 +6,7 @@ from fastapi.responses import FileResponse
 BASE = Path(__file__).resolve().parent
 INDEX = BASE / "index.html"
 
-app = FastAPI(title="AI Live Signal Bot V29 - Live 8 Sources")
+app = FastAPI(title="AI Live Signal Bot V30 - Live 8 Sources")
 
 app.add_middleware(
     CORSMiddleware,
@@ -55,62 +55,45 @@ SOURCES = [
 
 CRYPTO_SYMBOLS = {
     "binance": [
-        "BTCUSDT","ETHUSDT","BNBUSDT","SOLUSDT",
-        "XRPUSDT","ADAUSDT","DOGEUSDT","AVAXUSDT",
-        "LINKUSDT","LTCUSDT"
+        "BTCUSDT","ETHUSDT","BNBUSDT","SOLUSDT","XRPUSDT",
+        "ADAUSDT","DOGEUSDT","AVAXUSDT","LINKUSDT","LTCUSDT"
     ],
     "bybit": [
-        "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT",
-        "DOGEUSDT","BNBUSDT","ADAUSDT","AVAXUSDT",
-        "LINKUSDT"
+        "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT",
+        "BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"
     ],
     "okx": [
-        "BTC-USDT","ETH-USDT","SOL-USDT","XRP-USDT",
-        "DOGE-USDT","BNB-USDT","ADA-USDT",
-        "AVAX-USDT","LINK-USDT"
+        "BTC-USDT","ETH-USDT","SOL-USDT","XRP-USDT","DOGE-USDT",
+        "BNB-USDT","ADA-USDT","AVAX-USDT","LINK-USDT"
     ],
     "coinbase": [
-        "BTC-USD","ETH-USD","SOL-USD","XRP-USD",
-        "DOGE-USD","ADA-USD","AVAX-USD","LINK-USD"
+        "BTC-USD","ETH-USD","SOL-USD","XRP-USD","DOGE-USD",
+        "ADA-USD","AVAX-USD","LINK-USD"
     ],
     "kraken": [
-        "BTC/USD","ETH/USD","SOL/USD","XRP/USD",
-        "DOGE/USD","ADA/USD","AVAX/USD","LINK/USD"
+        "BTC/USD","ETH/USD","SOL/USD","XRP/USD","DOGE/USD",
+        "ADA/USD","AVAX/USD","LINK/USD"
     ],
     "bitget": [
-        "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT",
-        "DOGEUSDT","BNBUSDT","ADAUSDT","AVAXUSDT",
-        "LINKUSDT"
+        "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT",
+        "BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"
     ],
     "gateio": [
-        "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT",
-        "DOGEUSDT","BNBUSDT","ADAUSDT","AVAXUSDT",
-        "LINKUSDT"
+        "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT",
+        "BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"
     ],
     "mexc": [
-        "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT",
-        "DOGEUSDT","BNBUSDT","ADAUSDT","AVAXUSDT",
-        "LINKUSDT"
+        "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT",
+        "BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"
     ],
 }
 
 FOREX_SYMBOLS = [
-    "EURUSD",
-    "GBPUSD",
-    "USDJPY",
-    "AUDUSD",
-    "USDCAD",
-    "USDCHF",
-    "NZDUSD",
-    "EURGBP",
-    "EURJPY",
-    "GBPJPY",
+    "EURUSD","GBPUSD","USDJPY","AUDUSD","USDCAD",
+    "USDCHF","NZDUSD","EURGBP","EURJPY","GBPJPY"
 ]
 
-METAL_SYMBOLS = [
-    "XAUUSD",
-    "XAGUSD",
-]
+METAL_SYMBOLS = ["XAUUSD","XAGUSD"]
 
 
 @app.get("/")
@@ -122,8 +105,14 @@ async def home():
 async def health():
     return {
         "ok": True,
-        "app": "AI Live Signal Bot V29",
-        "auto_trade": False,
+        "app": "AI Live Signal Bot V30",
+        "auto_trade": True,
+        "auto_trade_demo": True,
+        "real_mode_available": True,
+        "real_orders": False,
+        "real_orders_reason":
+            "REAL execution requires secure exchange API credentials; "
+            "none are configured by default.",
         "live_adapters": [
             "binance",
             "bybit",
@@ -139,8 +128,18 @@ async def health():
 
 @app.get("/api/sources")
 async def sources():
+    return {"sources": SOURCES}
+
+
+@app.get("/api/trading-config")
+async def trading_config():
     return {
-        "sources": SOURCES
+        "demo_auto": True,
+        "real_mode_available": True,
+        "real_orders_enabled": False,
+        "reason":
+            "Real orders require secure exchange API credentials "
+            "configured on the server."
     }
 
 
