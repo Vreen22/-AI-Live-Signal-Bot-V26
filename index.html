@@ -1,84 +1,207 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI Live Signal Bot V27.7</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>AI Live Signal Bot V27.8</title>
 
 <style>
 :root{
---bg:#071018;--p:#0d1924;--l:#203040;--t:#eaf3fb;
---m:#8ea4b8;--g:#43e58b;--r:#ff5f6d;--y:#ffd166;--b:#62a8ff
+  --bg:#061019;
+  --panel:#0b1a25;
+  --line:#1d3445;
+  --text:#e8f1f8;
+  --muted:#91a9bb;
+  --green:#38ef9b;
+  --red:#ff6070;
+  --yellow:#ffd15c;
+  --blue:#62a8ff;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--t);font-family:Arial}
-.wrap{max-width:1400px;margin:auto;padding:16px}
-.title{font-size:25px;font-weight:800}
-.sub{color:var(--m);margin:4px 0 14px}
-.panel{background:var(--p);border:1px solid var(--l);border-radius:14px;padding:13px}
-.controls{display:grid;grid-template-columns:1.2fr 1fr 1fr .8fr 1fr;gap:8px}
-.controls label{display:block;font-size:12px;color:var(--m);margin-bottom:4px}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+.wrap{
+  max-width:1100px;
+  margin:auto;
+  padding:28px 20px 60px;
+}
+h1{
+  font-size:42px;
+  margin:0 0 10px;
+  line-height:1.1;
+}
+.sub{
+  color:var(--muted);
+  font-size:20px;
+  margin-bottom:28px;
+}
+.panel{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:22px;
+  margin-bottom:22px;
+}
+.grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+label{
+  display:block;
+  color:var(--muted);
+  margin-bottom:7px;
+  font-size:16px;
+}
 select,button{
-width:100%;background:#101f2c;color:var(--t);
-border:1px solid #294052;border-radius:9px;padding:10px
+  width:100%;
+  background:#0d202d;
+  color:var(--text);
+  border:1px solid #29465c;
+  border-radius:14px;
+  padding:15px;
+  font-size:17px;
 }
-button{cursor:pointer;font-weight:800}
-.status{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:13px}
-.badge{padding:5px 8px;border:1px solid var(--l);border-radius:999px}
-.live{color:var(--g);font-weight:800}
-.bad{color:var(--r);font-weight:800}
-.grid{display:grid;grid-template-columns:1fr 2fr;gap:12px;margin-top:12px}
-.signal{font-size:32px;font-weight:900;margin:4px 0}
-.buy{color:var(--g)}
-.sell{color:var(--r)}
-.none{color:var(--y)}
+button{
+  font-weight:800;
+  cursor:pointer;
+}
+.badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:18px;
+}
+.badge{
+  border:1px solid #20394b;
+  border-radius:30px;
+  padding:9px 14px;
+  font-size:16px;
+}
+.live{color:var(--green)}
+.off{color:var(--yellow)}
+
+.signalTitle{
+  color:var(--muted);
+  font-size:18px;
+}
+.signal{
+  font-size:62px;
+  font-weight:900;
+  margin:12px 0;
+}
+.buy{color:var(--green)}
+.sell{color:var(--red)}
+.no{color:var(--yellow)}
+
+.reason{
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.45;
+}
+
 .metrics{
-display:grid;grid-template-columns:repeat(4,1fr);
-gap:7px;margin-top:10px
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:20px;
 }
-.metric,.check{
-border:1px solid var(--l);border-radius:9px;padding:9px
+.metric{
+  border:1px solid #20384a;
+  border-radius:15px;
+  padding:15px;
+  min-height:76px;
 }
-.metric{font-size:12px;color:var(--m)}
+.metric span{
+  display:block;
+  color:var(--muted);
+  margin-bottom:8px;
+}
 .metric b{
-display:block;color:var(--t);font-size:16px;margin-top:4px
+  font-size:20px;
 }
-.trade{border-color:#34516b}
-.trade.entry b{color:var(--b)}
-.trade.sl b{color:var(--r)}
-.trade.tp b{color:var(--g)}
-.trade.rr b{color:var(--y)}
-.checks{
-display:grid;grid-template-columns:1fr 1fr;
-gap:6px;margin-top:8px
-}
-.ok{color:var(--g)}
-.check-buy{color:var(--g)}
-.check-sell{color:var(--r)}
-.check-off{color:#d9e3ec}
-.log{
-height:220px;overflow:auto;white-space:pre;
-font:12px monospace;color:#a9c0d4
-}
-canvas{
-width:100%;height:520px;background:#08131d;
-border-radius:10px;display:block
-}
-.levels{
-display:flex;gap:7px;flex-wrap:wrap;
-margin-top:8px;font-size:12px;color:var(--m)
+
+.levelGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:16px;
 }
 .level{
-padding:5px 8px;border:1px solid var(--l);
-border-radius:8px
+  border:1px solid #2a4a62;
+  border-radius:15px;
+  padding:16px;
 }
-.level b{color:var(--t)}
+.level span{
+  color:var(--muted);
+  display:block;
+}
+.entry b{color:var(--blue)}
+.sl b{color:var(--red)}
+.tp b{color:var(--green)}
+.rr b{color:var(--yellow)}
 
-@media(max-width:900px){
-.grid{grid-template-columns:1fr}
-.controls{grid-template-columns:1fr 1fr}
-.metrics{grid-template-columns:1fr 1fr}
-canvas{height:430px}
+.confirmGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:18px;
+}
+.confirm{
+  border:1px solid #20384a;
+  border-radius:14px;
+  padding:14px;
+  font-size:16px;
+  line-height:1.4;
+}
+.okbuy{color:var(--green)}
+.oksel{color:var(--red)}
+.fail{color:#d8e2ea}
+
+.registry{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:16px;
+  line-height:1.65;
+}
+.regrow{
+  display:grid;
+  grid-template-columns:40px 1fr 150px 150px;
+}
+.chart{
+  height:430px;
+  position:relative;
+  overflow:hidden;
+  border-radius:15px;
+  background:#06121b;
+  border:1px solid #142b3b;
+}
+canvas{
+  width:100%;
+  height:100%;
+  display:block;
+}
+.footer{
+  color:var(--muted);
+  text-align:center;
+  margin-top:30px;
+}
+
+@media(max-width:700px){
+  .wrap{padding:20px 12px 50px}
+  h1{font-size:34px}
+  .sub{font-size:17px}
+  .grid2,.metrics,.levelGrid,.confirmGrid{
+    grid-template-columns:1fr 1fr;
+  }
+  .regrow{
+    grid-template-columns:32px 1fr 90px;
+  }
+  .regrow div:nth-child(4){display:none}
+  .chart{height:390px}
 }
 </style>
 </head>
@@ -86,9 +209,7 @@ canvas{height:430px}
 <body>
 <div class="wrap">
 
-<div class="title">
-AI Live Signal Bot V27.7 — Multi Source
-</div>
+<h1>AI Live Signal Bot V27.8 — Multi Source</h1>
 
 <div class="sub">
 8 real public crypto feeds + trend + closed-candle 1–5 minute reversal engine • AUTO TRADE OFF
@@ -96,7 +217,7 @@ AI Live Signal Bot V27.7 — Multi Source
 
 <div class="panel">
 
-<div class="controls">
+<div class="grid2">
 
 <div>
 <label>Source</label>
@@ -106,9 +227,7 @@ AI Live Signal Bot V27.7 — Multi Source
 <div>
 <label>Market</label>
 <select id="market">
-<option>Crypto</option>
-<option>Forex / CFD</option>
-<option>Forex / Metals</option>
+<option value="crypto">Crypto</option>
 </select>
 </div>
 
@@ -120,2187 +239,2057 @@ AI Live Signal Bot V27.7 — Multi Source
 <div>
 <label>Timeframe</label>
 <select id="tf">
-<option>1m</option>
-<option>5m</option>
-<option>15m</option>
-<option>30m</option>
-<option>1h</option>
-<option>2h</option>
-<option>4h</option>
+<option value="1m">1m</option>
+<option value="5m">5m</option>
+<option value="15m">15m</option>
+<option value="30m">30m</option>
+<option value="1h">1h</option>
+<option value="4h">4h</option>
 </select>
 </div>
 
-<div>
+</div>
+
+<div style="margin-top:15px">
 <label>Action</label>
 <button id="connect">CONNECT LIVE</button>
 </div>
 
-</div>
-
-<div class="status">
-<span class="badge">
-Feed: <b id="feed">OFF</b>
-</span>
-
-<span class="badge">
-Source: <b id="ss">—</b>
-</span>
-
-<span class="badge">
-Closed: <b id="count">0</b>
-</span>
-
-<span class="badge">
-AUTO TRADE: <b>OFF</b>
-</span>
+<div class="badges">
+<div class="badge">Feed: <b id="feed" class="live">LIVE</b></div>
+<div class="badge">Source: <b id="sourceStatus">LIVE</b></div>
+<div class="badge">Closed: <b id="closed">0</b></div>
+<div class="badge">AUTO TRADE: <b class="off">OFF</b></div>
 </div>
 
 </div>
-
-<div class="grid">
-
-<div>
 
 <div class="panel">
 
-<div style="color:var(--m);font-size:12px">
-AI SIGNAL
-</div>
+<div class="signalTitle">AI SIGNAL</div>
+<div id="signal" class="signal no">NO TRADE</div>
 
-<div id="signal" class="signal none">
-NO TRADE
-</div>
-
-<div id="reason" style="color:var(--m)">
-Waiting…
+<div id="reason" class="reason">
+Waiting for live closed candles...
 </div>
 
 <div class="metrics">
 
 <div class="metric">
-Confidence
-<b id="conf">0%</b>
+<span>Confidence</span>
+<b id="confidence">0%</b>
 </div>
 
 <div class="metric">
-Confirmations
-<b id="confirm">0/11</b>
+<span>Confirmations</span>
+<b id="confirmations">0/11</b>
 </div>
 
 <div class="metric">
-Price
+<span>Price</span>
 <b id="price">—</b>
 </div>
 
 <div class="metric">
-RSI 14
+<span>RSI 14</span>
 <b id="rsi">—</b>
 </div>
 
 <div class="metric">
-ATR 14
+<span>ATR 14</span>
 <b id="atr">—</b>
 </div>
 
 <div class="metric">
-EMA 50
-<b id="e50">—</b>
+<span>EMA 50</span>
+<b id="ema50">—</b>
 </div>
 
 <div class="metric">
-EMA 200
-<b id="e200">—</b>
+<span>EMA 200</span>
+<b id="ema200">—</b>
 </div>
 
 <div class="metric">
-Trend
+<span>Trend</span>
 <b id="trend">—</b>
 </div>
 
 <div class="metric">
-Signal Filter
-<b id="filter">WAIT</b>
+<span>Signal Filter</span>
+<b id="filter">—</b>
 </div>
 
 <div class="metric">
-Signal Window
-<b id="window">1–5 min</b>
+<span>Signal Window</span>
+<b>1–5 min</b>
 </div>
 
 <div class="metric">
-Momentum
-<b id="mom">—</b>
+<span>Momentum</span>
+<b id="momentum">—</b>
 </div>
 
 <div class="metric">
-ADX 14
+<span>ADX 14</span>
 <b id="adx">—</b>
 </div>
 
 <div class="metric">
-MACD
+<span>MACD</span>
 <b id="macd">—</b>
 </div>
 
 <div class="metric">
-VWAP
+<span>VWAP</span>
 <b id="vwap">—</b>
 </div>
 
 <div class="metric">
-Volume Ratio
-<b id="volratio">—</b>
+<span>Volume Ratio</span>
+<b id="volume">—</b>
 </div>
 
 <div class="metric">
-BB Position
-<b id="bbpos">—</b>
+<span>BB Position</span>
+<b id="bb">—</b>
 </div>
 
 <div class="metric">
-Stochastic
+<span>Stochastic</span>
 <b id="stoch">—</b>
 </div>
 
-<div class="metric trade entry">
-ENTRY
+</div>
+
+<div class="levelGrid">
+
+<div class="level entry">
+<span>ENTRY</span>
 <b id="entry">—</b>
 </div>
 
-<div class="metric trade sl">
-STOP LOSS
+<div class="level sl">
+<span>STOP LOSS</span>
 <b id="sl">—</b>
 </div>
 
-<div class="metric trade tp">
-TP1
+<div class="level tp">
+<span>TP1</span>
 <b id="tp1">—</b>
 </div>
 
-<div class="metric trade tp">
-TP2
+<div class="level tp">
+<span>TP2</span>
 <b id="tp2">—</b>
 </div>
 
-<div class="metric trade rr">
-R:R
+<div class="level rr">
+<span>R:R</span>
 <b id="rr">—</b>
 </div>
 
 </div>
 
-<div class="levels">
-
-<span class="level">
-Entry: <b id="entrySmall">—</b>
-</span>
-
-<span class="level">
-SL: <b id="slSmall">—</b>
-</span>
-
-<span class="level">
-TP1: <b id="tp1Small">—</b>
-</span>
-
-<span class="level">
-TP2: <b id="tp2Small">—</b>
-</span>
-
-</div>
-
-<div class="checks">
-
-<div id="c1" class="check">
-1. Trend EMA: —
-</div>
-
-<div id="c2" class="check">
-2. ADX: —
-</div>
-
-<div id="c3" class="check">
-3. RSI: —
-</div>
-
-<div id="c4" class="check">
-4. MACD: —
-</div>
-
-<div id="c5" class="check">
-5. VWAP: —
-</div>
-
-<div id="c6" class="check">
-6. Volume: —
-</div>
-
-<div id="c7" class="check">
-7. BOS: —
-</div>
-
-<div id="c8" class="check">
-8. Liquidity/FVG: —
-</div>
-
-<div id="c9" class="check">
-9. Stochastic: —
-</div>
-
-<div id="c10" class="check">
-10. Bollinger: —
-</div>
-
-<div id="c11" class="check">
-11. Price/EMA: —
-</div>
-
-</div>
-
-</div>
-
-<div class="panel" style="margin-top:12px">
-
-<b>Source Registry</b>
-
-<div id="registry"
-class="log"
-style="margin-top:8px">
-</div>
-
-</div>
+<div class="confirmGrid" id="confirmGrid"></div>
 
 </div>
 
 <div class="panel">
 
-<b>Live Chart — closed candles</b>
+<h2>Source Registry</h2>
+<div id="registry" class="registry"></div>
 
-<canvas
-id="chart"
-width="1100"
-height="520">
-</canvas>
+</div>
 
-<div
-id="info"
-style="color:var(--m);font-size:12px;margin-top:7px">
+<div class="panel">
+
+<h2>Live Chart — closed candles</h2>
+
+<div class="chart">
+<canvas id="chart"></canvas>
+</div>
+
+<div id="chartInfo" class="sub" style="margin:12px 0 0">
+Waiting...
 </div>
 
 </div>
 
+<div class="footer">
+AI Live Signal Bot V27.8 • AUTO TRADE OFF
 </div>
 
 </div>
 
 <script>
-
-const $=x=>document.getElementById(x);
-
-let sources=[];
-let ins={};
-let cs=[];
-let ws=null;
-let recon=null;
-let cur=null;
-let tradeLevels=null;
-
-async function init(){
-
-sources=(await (await fetch('/api/sources')).json()).sources;
-
-ins=await (await fetch('/api/instruments')).json();
-
-$('source').innerHTML=sources.map(
-x=>`<option value="${x.id}">
-${x.name} — ${x.status}
-</option>`
-).join('');
-
-registry();
-symbols();
-
-$('source').onchange=()=>{
-symbols();
-registry();
-};
-
-$('market').onchange=symbols;
-$('symbol').onchange=connect;
-$('tf').onchange=connect;
-$('connect').onclick=connect;
-
-connect();
-}
-
-function src(){
-return sources.find(
-x=>x.id===$('source').value
-);
-}
-
-function symbols(){
-
-let s=src();
-let m=$('market').value;
-
-let a=
-m==='Crypto'
-?(ins.crypto[s?.id]||['BTCUSDT','ETHUSDT'])
-:m==='Forex / CFD'
-?ins.forex
-:ins.metals;
-
-$('symbol').innerHTML=a.map(
-x=>`<option>${x}</option>`
-).join('');
-
-$('ss').textContent=s?.status||'—';
-}
-
-function registry(){
-
-$('registry').textContent=
-sources.map(
-(x,i)=>
-`${String(i+1).padStart(2,'0')}. ${x.name.padEnd(24)} ${x.category.padEnd(16)} ${x.status}`
-).join('\n');
-
-}
-
-function off(){
-
-if(ws){
-try{ws.close()}catch(e){}
-ws=null;
-}
-
-if(recon){
-clearTimeout(recon);
-recon=null;
-}
-
-$('feed').textContent='OFF';
-$('feed').className='';
-}
-
-function live(){
-
-$('feed').textContent='LIVE';
-$('feed').className='live';
-
-}
-
-function resetLevels(){
-
-tradeLevels=null;
-
-[
-'entry',
-'sl',
-'tp1',
-'tp2',
-'rr',
-'entrySmall',
-'slSmall',
-'tp1Small',
-'tp2Small'
-].forEach(
-id=>$(id).textContent='—'
-);
-
-}
-
-async function connect(){
-
-off();
-cs=[];
-resetLevels();
-
-cur=src();
-
-$('ss').textContent=cur?.status||'—';
-
-if(cur?.status!=='LIVE'){
-
-$('signal').textContent='NOT CONNECTED';
-$('signal').className='signal none';
-
-$('reason').textContent=
-`${cur?.name||'Source'} is listed, but its live adapter is not enabled in this build.`;
-
-$('feed').textContent='NOT CONNECTED';
-$('feed').className='bad';
-
-draw();
-return;
-}
-
-try{
-
-if(cur.id==='binance')
-await binance();
-
-else if(cur.id==='bybit')
-await bybit();
-
-else if(cur.id==='okx')
-await okx();
-
-else if(cur.id==='coinbase')
-await coinbase();
-
-else if(cur.id==='kraken')
-await kraken();
-
-else if(cur.id==='gateio')
-await gateio();
-
-else if(cur.id==='bitget')
-await bitget();
-
-else if(cur.id==='mexc')
-await mexc();
-
-}catch(e){
-
-$('feed').textContent='ERROR';
-$('feed').className='bad';
-$('reason').textContent=e.message;
-
-}
-
-}
-
-function put(c){
-
-if(!c||!c.closed)return;
-
-let l=cs.at(-1);
-
-if(l&&l.t===c.t)
-cs[cs.length-1]=c;
-else
-cs.push(c);
-
-cs=cs.slice(-500);
-
-$('count').textContent=cs.length;
-
-analyze();
-draw();
-
-}
-
-function mapTF(t){
-
-return {
-'1m':1,
-'5m':5,
-'15m':15,
-'30m':30,
-'1h':60,
-'2h':120,
-'4h':240
-}[t]||1;
-
-}
-
-async function binance(){
-
-let s=$('symbol').value;
-let t=$('tf').value;
-
-let r=await fetch(
-`https://data-api.binance.vision/api/v3/klines?symbol=${s}&interval=${t}&limit=500`
-);
-
-if(!r.ok)
-throw Error('Binance history HTTP '+r.status);
-
-cs=(await r.json())
-.filter(x=>x[6]<=Date.now())
-.map(x=>({
-t:x[0],
-o:+x[1],
-h:+x[2],
-l:+x[3],
-c:+x[4],
-v:+x[5],
-closed:true
-}));
-
-live();
-
-$('count').textContent=cs.length;
-
-analyze();
-draw();
-
-ws=new WebSocket(
-`wss://data-stream.binance.vision/ws/${s.toLowerCase()}@kline_${t}`
-);
-
-ws.onmessage=e=>{
-
-let k=JSON.parse(e.data).k;
-
-if(k.x)
-put({
-t:k.t,
-o:+k.o,
-h:+k.h,
-l:+k.l,
-c:+k.c,
-v:+k.v,
-closed:true
-});
-
-};
-
-ws.onclose=()=>{
-if(cur?.id==='binance')
-recon=setTimeout(connect,2500);
-};
-
-}
-
-async function bybit(){
-
-let s=$('symbol').value;
-let t=mapTF($('tf').value);
-
-let r=await fetch(
-`https://api.bybit.com/v5/market/kline?category=spot&symbol=${s}&interval=${t}&limit=500`
-);
-
-if(!r.ok)
-throw Error('Bybit history HTTP '+r.status);
-
-let j=await r.json();
-
-cs=(j.result?.list||[])
-.reverse()
-.map(x=>({
-t:+x[0],
-o:+x[1],
-h:+x[2],
-l:+x[3],
-c:+x[4],
-v:+x[5],
-closed:true
-}));
-
-live();
-
-$('count').textContent=cs.length;
-
-analyze();
-draw();
-
-ws=new WebSocket(
-'wss://stream.bybit.com/v5/public/spot'
-);
-
-ws.onopen=()=>ws.send(
-JSON.stringify({
-op:'subscribe',
-args:[`kline.${t}.${s}`]
-})
-);
-
-ws.onmessage=e=>{
-
-let d=JSON.parse(e.data);
-let k=d.data?.[0];
-
-if(k?.confirm)
-put({
-t:+k.start,
-o:+k.open,
-h:+k.high,
-l:+k.low,
-c:+k.close,
-v:+k.volume,
-closed:true
-});
-
-};
-
-ws.onclose=()=>{
-if(cur?.id==='bybit')
-recon=setTimeout(connect,2500);
-};
-
-}
-
-async function okx(){
-
-let s=$('symbol').value;
-
-let b={
-'1m':'1m',
-'5m':'5m',
-'15m':'15m',
-'30m':'30m',
-'1h':'1H',
-'2h':'2H',
-'4h':'4H'
-}[$('tf').value]||'1m';
-
-let r=await fetch(
-`https://www.okx.com/api/v5/market/candles?instId=${encodeURIComponent(s)}&bar=${b}&limit=300`
-);
-
-if(!r.ok)
-throw Error('OKX history HTTP '+r.status);
-
-let j=await r.json();
-
-cs=(j.data||[])
-.reverse()
-.filter(x=>x[8]==='1')
-.map(x=>({
-t:+x[0],
-o:+x[1],
-h:+x[2],
-l:+x[3],
-c:+x[4],
-v:+x[5],
-closed:true
-}));
-
-live();
-
-$('count').textContent=cs.length;
-
-analyze();
-draw();
-
-ws=new WebSocket(
-'wss://ws.okx.com:8443/ws/v5/public'
-);
-
-ws.onopen=()=>ws.send(
-JSON.stringify({
-op:'subscribe',
-args:[{
-channel:'candle'+b,
-instId:s
-}]
-})
-);
-
-ws.onmessage=e=>{
-
-let d=JSON.parse(e.data);
-let x=d.data?.[0];
-
-if(x&&x[8]==='1')
-put({
-t:+x[0],
-o:+x[1],
-h:+x[2],
-l:+x[3],
-c:+x[4],
-v:+x[5],
-closed:true
-});
-
-};
-
-ws.onclose=()=>{
-if(cur?.id==='okx')
-recon=setTimeout(connect,2500);
-};
-
-}
-
-async function coinbase(){
-
-let s=$('symbol').value;
-
-let g={
-'1m':60,
-'5m':300,
-'15m':900,
-'30m':1800,
-'1h':3600,
-'2h':7200,
-'4h':21600
-}[$('tf').value]||60;
-
-let end=new Date();
-let start=new Date(
-end.getTime()-g*300000
-);
-
-let r=await fetch(
-`https://api.exchange.coinbase.com/products/${encodeURIComponent(s)}/candles?granularity=${g}&start=${start.toISOString()}&end=${end.toISOString()}`
-);
-
-if(!r.ok)
-throw Error('Coinbase history HTTP '+r.status);
-
-cs=(await r.json())
-.reverse()
-.map(x=>({
-t:+x[0]*1000,
-l:+x[1],
-h:+x[2],
-o:+x[3],
-c:+x[4],
-v:+x[5],
-closed:true
-}));
-
-live();
-
-$('count').textContent=cs.length;
-
-analyze();
-draw();
-
-ws=new WebSocket(
-'wss://advanced-trade-ws.coinbase.com'
-);
-
-ws.onopen=()=>ws.send(
-JSON.stringify({
-type:'subscribe',
-product_ids:[s],
-channel:'candles',
-granularity:g
-})
-);
-
-ws.onmessage=e=>{
-
-let d=JSON.parse(e.data);
-let x=d.events?.[0]?.candles?.[0];
-
-if(x)
-put({
-t:+x.start*1000,
-o:+x.open,
-h:+x.high,
-l:+x.low,
-c:+x.close,
-v:+x.volume,
-closed:true
-});
-
-};
-
-ws.onclose=()=>{
-if(cur?.id==='coinbase')
-recon=setTimeout(connect,2500);
-};
-
-}
-
-async function kraken(){
-
-let s=$('symbol').value;
-let m=mapTF($('tf').value);
-
-let r=await fetch(
-`https://api.kraken.com/0/public/OHLC?pair=${encodeURIComponent(s)}&interval=${m}`
-);
-
-if(!r.ok)
-throw Error('Kraken history HTTP '+r.status);
-
-let j=await r.json();
-
-let key=Object.keys(
-j.result||{}
-).find(k=>k!=='last');
-
-cs=(key?j.result[key]:[])
-.slice(-500)
-.map(x=>({
-t:+x[0]*1000,
-o:+x[1],
-h:+x[2],
-l:+x[3],
-c:+x[4],
-v:+x[6],
-closed:true
-}));
-
-live();
-
-$('count').textContent=cs.length;
-
-analyze();
-draw();
-
-ws=new WebSocket(
-'wss://ws.kraken.com/v2'
-);
-
-ws.onopen=()=>ws.send(
-JSON.stringify({
-method:'subscribe',
-params:{
-channel:'ohlc',
-symbol:[s],
-interval:m
-}
-})
-);
-
-ws.onmessage=e=>{
-
-let d=JSON.parse(e.data);
-let x=d.data?.[0];
-
-if(d.channel==='ohlc'&&x)
-put({
-t:Date.parse(x.timestamp),
-o:+x.open,
-h:+x.high,
-l:+x.low,
-c:+x.close,
-v:+x.volume,
-closed:x.confirmed!==false
-});
-
-};
-
-ws.onclose=()=>{
-if(cur?.id==='kraken')
-recon=setTimeout(connect,2500);
-};
-
-}
-
-function gateTF(t){
-
-return {
-'1m':'1m',
-'5m':'5m',
-'15m':'15m',
-'30m':'30m',
-'1h':'1h',
-'2h':'4h',
-'4h':'4h'
-}[t]||'1m';
-
-}
-
-function gateSym(s){
-
-return s
-.replace('-','_')
-.replace('/','_')
-.replace('USDT','_USDT')
-.replace('__','_');
-
-}
-
-async function gateio(){
-
-let raw=$('symbol').value;
-let s=gateSym(raw);
-let tf=gateTF($('tf').value);
-
-let r=await fetch(
-`https://api.gateio.ws/api/v4/spot/candlesticks?currency_pair=${encodeURIComponent(s)}&interval=${tf}&limit=500`
-);
-
-if(!r.ok)
-throw Error('Gate.io history HTTP '+r.status);
-
-let j=await r.json();
-
-cs=j.slice()
-.reverse()
-.map(x=>({
-t:+x[0]*1000,
-v:+x[1],
-c:+x[2],
-h:+x[3],
-l:+x[4],
-o:+x[5],
-closed:true
-}));
-
-live();
-
-$('count').textContent=cs.length;
-
-analyze();
-draw();
-
-ws=new WebSocket(
-'wss://api.gateio.ws/ws/v4/'
-);
-
-ws.onopen=()=>ws.send(
-JSON.stringify({
-time:Math.floor(Date.now()/1000),
-channel:'spot.candlesticks',
-event:'subscribe',
-payload:[tf,s]
-})
-);
-
-ws.onmessage=e=>{
-
-let d=JSON.parse(e.data);
-let x=d.result;
-
-if(
-d.channel==='spot.candlesticks'&&x
-)
-put({
-t:+x.t*1000,
-o:+x.o,
-h:+x.h,
-l:+x.l,
-c:+x.c,
-v:+x.v,
-closed:x.w!==false
-});
-
-};
-
-ws.onclose=()=>{
-if(cur?.id==='gateio')
-recon=setTimeout(connect,2500);
-};
-
-}
-
-function bitgetTF(t){
-
-return {
-'1m':'1m',
-'5m':'5m',
-'15m':'15m',
-'30m':'30m',
-'1h':'1H',
-'2h':'4H',
-'4h':'4H'
-}[t]||'1m';
-
-}
-
-async function bitget(){
-
-let s=$('symbol').value;
-let tf=bitgetTF($('tf').value);
-
-let r=await fetch(
-`https://api.bitget.com/api/v3/market/candles?category=SPOT&symbol=${encodeURIComponent(s)}&interval=${tf}&limit=500`
-);
-
-if(!r.ok)
-throw Error('Bitget history HTTP '+r.status);
-
-let j=await r.json();
-
-cs=(j.data||[])
-.slice()
-.reverse()
-.map(x=>({
-t:+x[0],
-o:+x[1],
-h:+x[2],
-l:+x[3],
-c:+x[4],
-v:+x[5],
-closed:true
-}));
-
-live();
-
-$('count').textContent=cs.length;
-
-analyze();
-draw();
-
-ws=new WebSocket(
-'wss://ws.bitget.com/v2/ws/public'
-);
-
-ws.onopen=()=>ws.send(
-JSON.stringify({
-op:'subscribe',
-args:[{
-instType:'SPOT',
-channel:'candle'+tf,
-instId:s
-}]
-})
-);
-
-ws.onmessage=e=>{
-
-let d=JSON.parse(e.data);
-let x=d.data?.[0];
-
-if(x)
-put({
-t:+x[0],
-o:+x[1],
-h:+x[2],
-l:+x[3],
-c:+x[4],
-v:+x[5],
-closed:true
-});
-
-};
-
-ws.onclose=()=>{
-if(cur?.id==='bitget')
-recon=setTimeout(connect,2500);
-};
-
-}
-
-function mexcTF(t){
-
-return {
-'1m':'Min1',
-'5m':'Min5',
-'15m':'Min15',
-'30m':'Min30',
-'1h':'Min60',
-'2h':'Hour4',
-'4h':'Hour4'
-}[t]||'Min1';
-
-}
-
-async function mexc(){
-
-let s=$('symbol').value;
-let tf=mexcTF($('tf').value);
-
-let apiTf={
-'Min1':'1m',
-'Min5':'5m',
-'Min15':'15m',
-'Min30':'30m',
-'Min60':'60m',
-'Hour4':'4h'
-}[tf]||'1m';
-
-let r=await fetch(
-`https://api.mexc.com/api/v3/klines?symbol=${encodeURIComponent(s)}&interval=${apiTf}&limit=500`
-);
-
-if(!r.ok)
-throw Error('MEXC history HTTP '+r.status);
-
-let j=await r.json();
-
-cs=j.slice()
-.reverse()
-.map(x=>({
-t:+x[0],
-o:+x[1],
-h:+x[2],
-l:+x[3],
-c:+x[4],
-v:+x[5],
-closed:true
-}));
-
-live();
-
-$('count').textContent=cs.length;
-
-analyze();
-draw();
-
-ws=new WebSocket(
-'wss://wbs-api.mexc.com/ws'
-);
-
-ws.onopen=()=>ws.send(
-JSON.stringify({
-method:'SUBSCRIPTION',
-params:[
-`spot@public.kline.v3.api.pb@${s}@${tf}`
-]
-})
-);
-
-ws.onmessage=e=>{
-
-let d=JSON.parse(e.data);
-let k=d.publicspotkline;
-
-if(k)
-put({
-t:+k.windowstart*1000,
-o:+k.openingprice,
-h:+k.highestprice,
-l:+k.lowestprice,
-c:+k.closingprice,
-v:+k.volume,
-closed:true
-});
-
-};
-
-ws.onclose=()=>{
-if(cur?.id==='mexc')
-recon=setTimeout(connect,2500);
-};
-
-}
-
-function ema(a,n){
-
-if(a.length<n)return null;
-
-let k=2/(n+1);
-
-let e=
-a.slice(0,n)
-.reduce((x,y)=>x+y,0)/n;
-
-for(let i=n;i<a.length;i++)
-e=a[i]*k+e*(1-k);
-
-return e;
-
-}
-
-function rsi(a,n=14){
-
-if(a.length<=n)return null;
-
-let g=0,l=0;
-
-for(let i=1;i<=n;i++){
-
-let d=a[i]-a[i-1];
-
-g+=Math.max(d,0);
-l+=Math.max(-d,0);
-
-}
-
-g/=n;
-l/=n;
-
-let v=
-100-100/(1+(l?g/l:100));
-
-for(let i=n+1;i<a.length;i++){
-
-let d=a[i]-a[i-1];
-
-g=(g*(n-1)+Math.max(d,0))/n;
-l=(l*(n-1)+Math.max(-d,0))/n;
-
-v=100-100/(1+(l?g/l:100));
-
-}
-
-return v;
-
-}
-
-function atr(a,n=14){
-
-if(a.length<n+1)return null;
-
-let t=[];
-
-for(let i=1;i<a.length;i++){
-
-t.push(
-Math.max(
-a[i].h-a[i].l,
-Math.abs(a[i].h-a[i-1].c),
-Math.abs(a[i].l-a[i-1].c)
-)
-);
-
-}
-
-return t.slice(-n)
-.reduce((x,y)=>x+y,0)/n;
-
-}
-
-function emaSeries(a,n){
-
-let out=new Array(a.length).fill(null);
-
-if(a.length<n)return out;
-
-let k=2/(n+1);
-
-let e=
-a.slice(0,n)
-.reduce((x,y)=>x+y,0)/n;
-
-out[n-1]=e;
-
-for(let i=n;i<a.length;i++){
-
-e=a[i]*k+e*(1-k);
-out[i]=e;
-
-}
-
-return out;
-
-}
-
-function adxCalc(a,n=14){
-
-if(a.length<2*n+1)return null;
-
-let tr=[],pdm=[],mdm=[];
-
-for(let i=1;i<a.length;i++){
-
-let up=a[i].h-a[i-1].h;
-let down=a[i-1].l-a[i].l;
-
-tr.push(
-Math.max(
-a[i].h-a[i].l,
-Math.abs(a[i].h-a[i-1].c),
-Math.abs(a[i].l-a[i-1].c)
-)
-);
-
-pdm.push(
-up>down&&up>0?up:0
-);
-
-mdm.push(
-down>up&&down>0?down:0
-);
-
-}
-
-let atrv=
-tr.slice(0,n)
-.reduce((x,y)=>x+y,0);
-
-let plus=
-pdm.slice(0,n)
-.reduce((x,y)=>x+y,0);
-
-let minus=
-mdm.slice(0,n)
-.reduce((x,y)=>x+y,0);
-
-let dx=[];
-
-for(let i=n;i<tr.length;i++){
-
-atrv=atrv-atrv/n+tr[i];
-plus=plus-plus/n+pdm[i];
-minus=minus-minus/n+mdm[i];
-
-let pi=100*plus/(atrv||1);
-let mi=100*minus/(atrv||1);
-
-dx.push(
-100*Math.abs(pi-mi)/(pi+mi||1)
-);
-
-}
-
-return dx.length>=n
-?dx.slice(-n)
-.reduce((x,y)=>x+y,0)/n
-:null;
-
-}
-
-function macdCalc(a){
-
-if(a.length<35)return null;
-
-let f=emaSeries(a,12);
-let s=emaSeries(a,26);
-
-let line=[];
-
-for(let i=25;i<a.length;i++)
-line.push(f[i]-s[i]);
-
-if(line.length<9)return null;
-
-let sig=ema(line,9);
-let ln=line.at(-1);
-
-return {
-line:ln,
-signal:sig,
-hist:ln-sig
-};
-
-}
-
-function vwapCalc(a,n=50){
-
-let z=a.slice(-n);
-let pv=0,v=0;
-
-for(const q of z){
-
-let vol=Number(q.v)||0;
-let p=(q.h+q.l+q.c)/3;
-
-pv+=p*vol;
-v+=vol;
-
-}
-
-return v?pv/v:null;
-
-}
-
-function volumeRatio(a,n=20){
-
-if(a.length<n+1)return null;
-
-let cur=Number(a.at(-1).v)||0;
-
-let base=
-a.slice(-n-1,-1)
-.reduce(
-(x,y)=>x+(Number(y.v)||0),0
-)/n;
-
-return base?cur/base:null;
-
-}
-
-function bbCalc(a,n=20,m=2){
-
-if(a.length<n)return null;
-
-let z=a.slice(-n);
-
-let mid=
-z.reduce((x,y)=>x+y,0)/n;
-
-let sd=
-Math.sqrt(
-z.reduce(
-(x,y)=>x+(y-mid)**2,0
-)/n
-);
-
-let up=mid+m*sd;
-let lo=mid-m*sd;
-
-return {
-position:(a.at(-1)-lo)/(up-lo||1),
-upper:up,
-lower:lo
-};
-
-}
-
-function stochCalc(a,n=14){
-
-if(a.length<n)return null;
-
-let z=a.slice(-n);
-
-let hi=Math.max(
-...z.map(x=>x.h)
-);
-
-let lo=Math.min(
-...z.map(x=>x.l)
-);
-
-return 100*
-(a.at(-1).c-lo)/
-(hi-lo||1);
-
-}
-
-function setTradeLevels(side,entry,av){
-
-if(
-(side!=='BUY'&&side!=='SELL')||
-!Number.isFinite(entry)||
-!Number.isFinite(av)||
-av<=0
-){
-resetLevels();
-return;
-}
-
-let risk=1.5*av;
-
-let sl,tp1,tp2;
-
-if(side==='BUY'){
-
-sl=entry-risk;
-tp1=entry+risk;
-tp2=entry+2*risk;
-
-}else{
-
-sl=entry+risk;
-tp1=entry-risk;
-tp2=entry-2*risk;
-
-}
-
-tradeLevels={
-side,
-entry,
-sl,
-tp1,
-tp2
-};
-
-$('entry').textContent=fmt(entry);
-$('sl').textContent=fmt(sl);
-$('tp1').textContent=fmt(tp1);
-$('tp2').textContent=fmt(tp2);
-
-$('rr').textContent='1:1 / 1:2';
-
-$('entrySmall').textContent=fmt(entry);
-$('slSmall').textContent=fmt(sl);
-$('tp1Small').textContent=fmt(tp1);
-$('tp2Small').textContent=fmt(tp2);
-
-draw();
-
-}
-
-function analyze(){
-
-if(cs.length<210)return;
-
-let cl=cs.map(x=>x.c);
-
-let e50=ema(cl,50);
-let e200=ema(cl,200);
-let rv=rsi(cl);
-let av=atr(cs);
-
-let a=cs.at(-1);
-let p=cs.at(-2);
-let p3=cs.at(-3);
-
-if(
-![e50,e200,rv,av]
-.every(Number.isFinite)
-)return;
-
-let adx=adxCalc(cs);
-let mac=macdCalc(cl);
-let vw=vwapCalc(cs);
-let vr=volumeRatio(cs);
-let bb=bbCalc(cl);
-let st=stochCalc(cs);
-
-if(
-![adx,mac?.hist,vw,vr,bb?.position,st]
-.every(Number.isFinite)
-)return;
-
-let bull=e50>e200;
-let bear=e50<e200;
-
-let mb=
-a.c>p.c&&p.c>p3.c;
-
-let ms=
-a.c<p.c&&p.c<p3.c;
-
-let rr=cs.slice(-12,-2);
-
-let hi=Math.max(
-...rr.map(x=>x.h)
-);
-
-let lo=Math.min(
-...rr.map(x=>x.l)
-);
-
-let lb=
-a.l<lo&&a.c>lo;
-
-let ls=
-a.h>hi&&a.c<hi;
-
-let bosb=
-a.c>
-Math.max(
-...cs.slice(-8,-1)
-.map(x=>x.h)
-);
-
-let boss=
-a.c<
-Math.min(
-...cs.slice(-8,-1)
-.map(x=>x.l)
-);
-
-let fb=
-p3.h<a.l;
-
-let fs=
-p3.l>a.h;
-
-/* 11 confirmation engine */
-
-let buy=[
-bull,
-adx>=20,
-rv>=50&&rv<=68,
-mac.hist>0,
-a.c>vw,
-vr>=1,
-bosb,
-lb||fb,
-st>=50&&st<=85,
-bb.position>0.5&&bb.position<0.98,
-a.c>e50
+"use strict";
+
+/* =========================================================
+   SOURCE REGISTRY
+========================================================= */
+
+const SOURCES = [
+ {id:"binance",name:"Binance",status:"LIVE"},
+ {id:"bybit",name:"Bybit",status:"LIVE"},
+ {id:"okx",name:"OKX",status:"LIVE"},
+ {id:"coinbase",name:"Coinbase Exchange",status:"LIVE"},
+ {id:"kraken",name:"Kraken",status:"LIVE"},
+ {id:"bitget",name:"Bitget",status:"LIVE"},
+ {id:"gateio",name:"Gate.io",status:"LIVE"},
+ {id:"mexc",name:"MEXC",status:"LIVE"},
+ {id:"kucoin",name:"KuCoin",status:"LISTED"},
+ {id:"bitfinex",name:"Bitfinex",status:"LISTED"},
+ {id:"cryptocom",name:"Crypto.com Exchange",status:"LISTED"},
+ {id:"deribit",name:"Deribit",status:"LISTED"},
+ {id:"gemini",name:"Gemini",status:"LISTED"},
+ {id:"hyperliquid",name:"Hyperliquid",status:"LISTED"},
+ {id:"htx",name:"HTX / Huobi",status:"LISTED"},
+ {id:"bitstamp",name:"Bitstamp",status:"LISTED"},
+ {id:"bithumb",name:"Bithumb",status:"LISTED"},
+ {id:"upbit",name:"Upbit",status:"LISTED"},
+ {id:"phemex",name:"Phemex",status:"LISTED"},
+ {id:"poloniex",name:"Poloniex",status:"LISTED"},
+ {id:"dydx",name:"dYdX",status:"LISTED"},
+ {id:"bitflyer",name:"bitFlyer",status:"LISTED"},
+ {id:"coinex",name:"CoinEx",status:"LISTED"},
+ {id:"lbank",name:"LBank",status:"LISTED"},
+ {id:"whitebit",name:"WhiteBIT",status:"LISTED"},
+ {id:"bitmart",name:"BitMart",status:"LISTED"},
+ {id:"ascendex",name:"AscendEX",status:"LISTED"},
+ {id:"coinw",name:"CoinW",status:"LISTED"},
+ {id:"bingx",name:"BingX",status:"LISTED"},
+ {id:"oanda",name:"OANDA",status:"API KEY REQUIRED"},
+ {id:"fxcm",name:"FXCM",status:"API KEY REQUIRED"},
+ {id:"twelvedata",name:"Twelve Data",status:"API KEY REQUIRED"}
 ];
 
-let sell=[
-bear,
-adx>=20,
-rv<=50&&rv>=32,
-mac.hist<0,
-a.c<vw,
-vr>=1,
-boss,
-ls||fs,
-st<=50&&st>=15,
-bb.position<0.5&&bb.position>0.02,
-a.c<e50
-];
-
-let w=[
-18,9,9,9,9,8,10,10,6,6,6
-];
-
-let bc=
-buy.filter(Boolean).length;
-
-let sc=
-sell.filter(Boolean).length;
-
-let bs=
-buy.reduce(
-(sum,v,i)=>sum+(v?w[i]:0),0
-);
-
-let ss=
-sell.reduce(
-(sum,v,i)=>sum+(v?w[i]:0),0
-);
-
-/*
-V27.7 CLOSED-CANDLE REVERSAL ENGINE
-
-If main trend is bullish and sudden bearish
-movement is confirmed by closed candles,
-allow short SELL 1–5 minutes.
-
-If main trend is bearish and sudden bullish
-movement is confirmed by closed candles,
-allow short BUY 1–5 minutes.
-
-No intrabar candle triggers this engine.
-*/
-
-let ranges=
-cs.slice(-21,-1)
-.map(x=>x.h-x.l);
-
-let avgRange=
-ranges.length
-?ranges.reduce((u,v)=>u+v,0)/ranges.length
-:0;
-
-let nowRange=a.h-a.l;
-
-let body=
-Math.abs(a.c-a.o);
-
-let bodyRatio=
-nowRange
-?body/nowRange
-:0;
-
-let suddenBear=
-ms&&(
-nowRange>=avgRange*1.05||
-bodyRatio>=0.55
-);
-
-let suddenBull=
-mb&&(
-nowRange>=avgRange*1.05||
-bodyRatio>=0.55
-);
-
-let reversalSell=[
-suddenBear,
-mac.hist<0,
-a.c<vw,
-rv<50,
-boss,
-ls||fs,
-a.c<e50,
-st<50,
-bb.position<0.5,
-vr>=0.8,
-a.c<p.c
-];
-
-let reversalBuy=[
-suddenBull,
-mac.hist>0,
-a.c>vw,
-rv>50,
-bosb,
-lb||fb,
-a.c>e50,
-st>50,
-bb.position>0.5,
-vr>=0.8,
-a.c>p.c
-];
-
-let revW=[
-11,10,10,9,10,10,9,7,7,4,4
-];
-
-let rsc=
-reversalSell.filter(Boolean).length;
-
-let rbc=
-reversalBuy.filter(Boolean).length;
-
-let rss=
-reversalSell.reduce(
-(sum,v,i)=>sum+(v?revW[i]:0),0
-);
-
-let rbs=
-reversalBuy.reduce(
-(sum,v,i)=>sum+(v?revW[i]:0),0
-);
-
-let shortTF=
-$('tf').value==='1m'||
-$('tf').value==='5m';
-
-let strongRevSell=
-shortTF&&
-bull&&
-rsc>=8&&
-rss>=75;
-
-let strongRevBuy=
-shortTF&&
-bear&&
-rbc>=8&&
-rbs>=75;
-
-let side='NO TRADE';
-let selected='BUY';
-let count=bc;
-let conf=bs;
-let isReversal=false;
-
-/*
-Priority:
-1–5 minute reversal first.
-Normal trend setup second.
-*/
-
-if(
-strongRevSell&&
-(!strongRevBuy||rss>=rbs)
-){
-
-side='SELL';
-selected='SELL';
-count=rsc;
-conf=rss;
-isReversal=true;
-
-}
-else if(
-strongRevBuy&&
-(!strongRevSell||rbs>rss)
-){
-
-side='BUY';
-selected='BUY';
-count=rbc;
-conf=rbs;
-isReversal=true;
-
-}
-else if(bull){
-
-selected='BUY';
-count=bc;
-conf=bs;
-
-if(
-bc>=8&&
-bs>=75
-)
-side='BUY';
-
-}
-else if(bear){
-
-selected='SELL';
-count=sc;
-conf=ss;
-
-if(
-sc>=8&&
-ss>=75
-)
-side='SELL';
-
-}
-else{
-
-selected=
-bs>=ss
-?'BUY'
-:'SELL';
-
-count=
-selected==='BUY'
-?bc
-:sc;
-
-conf=
-selected==='BUY'
-?bs
-:ss;
-
-}
-
-$('signal').textContent=side;
-
-$('signal').className=
-'signal '+
-(
-side==='BUY'
-?'buy'
-:side==='SELL'
-?'sell'
-:'none'
-);
-
-$('conf').textContent=
-Math.round(conf)+'%';
-
-$('confirm').textContent=
-count+'/11';
-
-$('price').textContent=
-fmt(a.c);
-
-$('rsi').textContent=
-rv.toFixed(2);
-
-$('atr').textContent=
-av.toFixed(4);
-
-$('e50').textContent=
-fmt(e50);
-
-$('e200').textContent=
-fmt(e200);
-
-$('trend').textContent=
-bull
-?'BULLISH'
-:bear
-?'BEARISH'
-:'NEUTRAL';
-
-$('window').textContent=
-shortTF
-?'1–5 min'
-:'timeframe setup';
-
-$('filter').textContent=
-side==='BUY'
-?
-(
-isReversal
-?'BUY REVERSAL 1–5M'
-:'BUY ALLOWED'
-)
-:
-side==='SELL'
-?
-(
-isReversal
-?'SELL REVERSAL 1–5M'
-:'SELL ALLOWED'
-)
-:
-(
-strongRevSell
-?'SELL REVERSAL READY'
-:
-strongRevBuy
-?'BUY REVERSAL READY'
-:
-bull
-?'BUY WATCH'
-:
-bear
-?'SELL WATCH'
-:'WAIT'
-);
-
-$('filter').style.color=
-side==='BUY'
-?'var(--g)'
-:
-side==='SELL'
-?'var(--r)'
-:'var(--y)';
-
-$('mom').textContent=
-mb
-?'BULLISH'
-:
-ms
-?'BEARISH'
-:'MIXED';
-
-$('adx').textContent=
-adx.toFixed(2);
-
-$('macd').textContent=
-mac.hist.toFixed(4);
-
-$('vwap').textContent=
-fmt(vw);
-
-$('volratio').textContent=
-vr.toFixed(2)+'x';
-
-$('bbpos').textContent=
-(bb.position*100).toFixed(1)+'%';
-
-$('stoch').textContent=
-st.toFixed(2);
-
-if(
-side==='BUY'||
-side==='SELL'
-)
-setTradeLevels(
-side,
-a.c,
-av
-);
-else
-resetLevels();
-
-let labels=[
-'Trend EMA',
-'ADX 14',
-'RSI 14',
-'MACD',
-'VWAP',
-'Volume',
-'BOS',
-'Liquidity/FVG',
-'Stochastic',
-'Bollinger',
-'Price/EMA'
-];
-
-for(let i=0;i<11;i++){
-
-$('c'+(i+1)).innerHTML=
-`${i+1}. ${labels[i]}:
-<span class="${
-buy[i]
-?'check-buy'
-:'check-off'
-}">
-BUY ${buy[i]?'✓':'✕'}
-</span>
-<span class="${
-sell[i]
-?'check-sell'
-:'check-off'
-}">
-SELL ${sell[i]?'✓':'✕'}
-</span>`;
-
-$('c'+(i+1)).className=
-'check';
-
-}
-
-let candidate=
-selected==='BUY'
-?'BUY'
-:'SELL';
-
-if(side==='NO TRADE'){
-
-if(isReversal){
-
-$('reason').textContent=
-`${candidate} reversal candidate • ${count}/11 confirmations • ${Math.round(conf)}% • ${shortTF?'1–5 min':'short-term'} • Need 8/11 + 75%`;
-
-}
-else{
-
-$('reason').textContent=
-`${candidate} candidate • ${count}/11 confirmations • ${Math.round(conf)}% • Main trend: ${bull?'BULLISH':bear?'BEARISH':'NEUTRAL'} • Reversal scan active • Need 8/11 + 75%`;
-
-}
-
-}
-else if(isReversal){
-
-$('reason').textContent=
-`${side} • CLOSED-CANDLE REVERSAL • ${count}/11 confirmations • ${Math.round(conf)}% • 1–5 min window`;
-
-}
-else{
-
-$('reason').textContent=
-`${side} • ${count}/11 confirmations • ${Math.round(conf)}% • Main trend setup confirmed`;
-
-}
-
-}
-
-function chk(id,ok,t){
-
-$(id).textContent=t;
-
-$(id).className=
-'check '+(ok?'ok':'');
-
+const SYMBOLS = {
+ binance:["BTCUSDT","ETHUSDT","BNBUSDT","SOLUSDT","XRPUSDT","ADAUSDT","DOGEUSDT","AVAXUSDT","LINKUSDT","LTCUSDT"],
+ bybit:["BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT","BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"],
+ okx:["BTC-USDT","ETH-USDT","SOL-USDT","XRP-USDT","DOGE-USDT","BNB-USDT","ADA-USDT","AVAX-USDT","LINK-USDT"],
+ coinbase:["BTC-USD","ETH-USD","SOL-USD","XRP-USD","DOGE-USD","ADA-USD","AVAX-USD","LINK-USD"],
+ kraken:["BTC/USD","ETH/USD","SOL/USD","XRP/USD","DOGE/USD","ADA/USD","AVAX/USD","LINK/USD"],
+ bitget:["BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT","BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"],
+ gateio:["BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT","BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"],
+ mexc:["BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT","BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"]
+};
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let candles=[];
+let socket=null;
+let currentSource="binance";
+let currentSymbol="BTCUSDT";
+let currentTF="1m";
+let reconnectTimer=null;
+let levels=null;
+let lastClosedTime=0;
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const $ = id => document.getElementById(id);
+
+function num(x,d=0){
+  const n=Number(x);
+  return Number.isFinite(n)?n:d;
 }
 
 function fmt(x){
+  if(!Number.isFinite(x)) return "—";
+  if(Math.abs(x)>=1000) return x.toLocaleString(undefined,{maximumFractionDigits:2});
+  return x.toFixed(4);
+}
 
-return x==null
-?'—'
-:Number(x).toLocaleString(
-undefined,
-{maximumFractionDigits:6}
-);
+/* =========================================================
+   SOURCE SELECT
+========================================================= */
+
+function fillSources(){
+  const s=$("source");
+  s.innerHTML="";
+
+  SOURCES.forEach(x=>{
+    const o=document.createElement("option");
+    o.value=x.id;
+    o.textContent=x.name+" — "+x.status;
+    s.appendChild(o);
+  });
+}
+
+function fillSymbols(){
+  const s=$("symbol");
+  s.innerHTML="";
+
+  const list=SYMBOLS[currentSource] || ["BTCUSDT"];
+
+  list.forEach(x=>{
+    const o=document.createElement("option");
+    o.value=x;
+    o.textContent=x;
+    s.appendChild(o);
+  });
+
+  currentSymbol=list[0];
+}
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function tfMinutes(tf){
+  const map={
+    "1m":1,
+    "5m":5,
+    "15m":15,
+    "30m":30,
+    "1h":60,
+    "4h":240
+  };
+  return map[tf]||1;
+}
+
+function tfMs(tf){
+  return tfMinutes(tf)*60000;
+}
+
+function normalizeCandle(c){
+  return {
+    t:num(c.t),
+    o:num(c.o),
+    h:num(c.h),
+    l:num(c.l),
+    c:num(c.c),
+    v:num(c.v)
+  };
+}
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+async function loadHistory(){
+
+  let url="";
+
+  try{
+
+    if(currentSource==="binance"){
+      url=`https://data-api.binance.vision/api/v3/klines?symbol=${currentSymbol}&interval=${currentTF}&limit=500`;
+    }
+
+    if(currentSource==="bybit"){
+      url=`https://api.bybit.com/v5/market/kline?category=spot&symbol=${currentSymbol}&interval=${tfMinutes(currentTF)}&limit=500`;
+    }
+
+    if(currentSource==="okx"){
+      url=`https://www.okx.com/api/v5/market/candles?instId=${currentSymbol}&bar=${currentTF}&limit=300`;
+    }
+
+    if(currentSource==="coinbase"){
+      const gran={
+        "1m":60,
+        "5m":300,
+        "15m":900,
+        "30m":1800,
+        "1h":3600,
+        "4h":21600
+      }[currentTF]||60;
+
+      url=`https://api.exchange.coinbase.com/products/${currentSymbol}/candles?granularity=${gran}`;
+    }
+
+    if(currentSource==="kraken"){
+      url=`https://api.kraken.com/0/public/OHLC?pair=${encodeURIComponent(currentSymbol)}&interval=${tfMinutes(currentTF)}`;
+    }
+
+    if(currentSource==="gateio"){
+      const sym=currentSymbol.replace("USDT","_USDT");
+      url=`https://api.gateio.ws/api/v4/spot/candlesticks?currency_pair=${sym}&interval=${currentTF}&limit=500`;
+    }
+
+    if(currentSource==="bitget"){
+      url=`https://api.bitget.com/api/v2/spot/market/candles?symbol=${currentSymbol}&granularity=${currentTF}&limit=500`;
+    }
+
+    if(currentSource==="mexc"){
+      url=`https://api.mexc.com/api/v3/klines?symbol=${currentSymbol}&interval=${currentTF}&limit=500`;
+    }
+
+    if(!url) throw new Error("No public adapter");
+
+    const r=await fetch(url,{cache:"no-store"});
+    if(!r.ok) throw new Error("HTTP "+r.status);
+
+    const data=await r.json();
+
+    let arr=[];
+
+    /* Binance */
+    if(currentSource==="binance"){
+      arr=data.map(x=>({
+        t:+x[0],
+        o:+x[1],
+        h:+x[2],
+        l:+x[3],
+        c:+x[4],
+        v:+x[5]
+      }));
+    }
+
+    /* Bybit */
+    if(currentSource==="bybit"){
+      arr=(data.result?.list||[]).reverse().map(x=>({
+        t:+x[0],
+        o:+x[1],
+        h:+x[2],
+        l:+x[3],
+        c:+x[4],
+        v:+x[5]
+      }));
+    }
+
+    /* OKX */
+    if(currentSource==="okx"){
+      arr=(data.data||[]).reverse().map(x=>({
+        t:+x[0],
+        o:+x[1],
+        h:+x[2],
+        l:+x[3],
+        c:+x[4],
+        v:+x[5]
+      }));
+    }
+
+    /* Coinbase */
+    if(currentSource==="coinbase"){
+      arr=data.reverse().map(x=>({
+        t:+x[0]*1000,
+        l:+x[1],
+        h:+x[2],
+        o:+x[3],
+        c:+x[4],
+        v:+x[5]
+      }));
+    }
+
+    /* Kraken */
+    if(currentSource==="kraken"){
+      const key=Object.keys(data.result||{}).find(k=>k!=="last");
+      arr=(key?data.result[key]:[]).map(x=>({
+        t:+x[0]*1000,
+        o:+x[1],
+        h:+x[2],
+        l:+x[3],
+        c:+x[4],
+        v:+x[6]
+      }));
+    }
+
+    /* Gate */
+    if(currentSource==="gateio"){
+      arr=data.map(x=>({
+        t:+x[0]*1000,
+        v:+x[1],
+        c:+x[2],
+        h:+x[3],
+        l:+x[4],
+        o:+x[5]
+      })).sort((a,b)=>a.t-b.t);
+    }
+
+    /* Bitget */
+    if(currentSource==="bitget"){
+      arr=(data.data||[]).reverse().map(x=>({
+        t:+x[0],
+        o:+x[1],
+        h:+x[2],
+        l:+x[3],
+        c:+x[4],
+        v:+x[5]
+      }));
+    }
+
+    /* MEXC */
+    if(currentSource==="mexc"){
+      arr=data.map(x=>({
+        t:+x[0],
+        o:+x[1],
+        h:+x[2],
+        l:+x[3],
+        c:+x[4],
+        v:+x[5]
+      }));
+    }
+
+    candles=arr
+      .map(normalizeCandle)
+      .filter(x=>x.t&&x.c>0)
+      .sort((a,b)=>a.t-b.t)
+      .slice(-500);
+
+    /*
+      IMPORTANT:
+      The last candle may still be open.
+      Remove it so analysis uses CLOSED candles only.
+    */
+
+    const now=Date.now();
+    const period=tfMs(currentTF);
+
+    candles=candles.filter(x=>{
+      return x.t+period <= now+1000;
+    });
+
+    $("closed").textContent=candles.length;
+
+    if(candles.length>30){
+      analyze();
+      drawChart();
+    }
+
+  }catch(err){
+
+    console.error(err);
+
+    $("feed").textContent="ERROR";
+    $("sourceStatus").textContent="ERROR";
+    $("reason").textContent=
+      "Live feed error: "+err.message;
+  }
+}
+
+/* =========================================================
+   INDICATORS
+========================================================= */
+
+function closes(){
+  return candles.map(x=>x.c);
+}
+
+function highs(){
+  return candles.map(x=>x.h);
+}
+
+function lows(){
+  return candles.map(x=>x.l);
+}
+
+function volumes(){
+  return candles.map(x=>x.v);
+}
+
+function sma(a,n){
+  if(a.length<n)return null;
+  let s=0;
+  for(let i=a.length-n;i<a.length;i++)s+=a[i];
+  return s/n;
+}
+
+function ema(a,n){
+  if(a.length<n)return null;
+
+  let e=sma(a.slice(0,n),n);
+  const k=2/(n+1);
+
+  for(let i=n;i<a.length;i++){
+    e=a[i]*k+e*(1-k);
+  }
+
+  return e;
+}
+
+function rsi(a,n=14){
+  if(a.length<n+1)return null;
+
+  let gain=0;
+  let loss=0;
+
+  for(let i=a.length-n;i<a.length;i++){
+    const d=a[i]-a[i-1];
+    if(d>0)gain+=d;
+    else loss-=d;
+  }
+
+  if(loss===0)return 100;
+
+  const rs=(gain/n)/(loss/n);
+
+  return 100-(100/(1+rs));
+}
+
+function atr(cs,n=14){
+  if(cs.length<n+1)return null;
+
+  const tr=[];
+
+  for(let i=1;i<cs.length;i++){
+    tr.push(
+      Math.max(
+        cs[i].h-cs[i].l,
+        Math.abs(cs[i].h-cs[i-1].c),
+        Math.abs(cs[i].l-cs[i-1].c)
+      )
+    );
+  }
+
+  return sma(tr,n);
+}
+
+function macd(a){
+  if(a.length<35)return 0;
+
+  const fast=ema(a,12);
+  const slow=ema(a,26);
+
+  if(fast===null||slow===null)return 0;
+
+  return fast-slow;
+}
+
+function stochastic(cs,n=14){
+  if(cs.length<n)return null;
+
+  const recent=cs.slice(-n);
+  const hi=Math.max(...recent.map(x=>x.h));
+  const lo=Math.min(...recent.map(x=>x.l));
+
+  if(hi===lo)return 50;
+
+  return ((recent.at(-1).c-lo)/(hi-lo))*100;
+}
+
+function vwap(cs,n=50){
+  const recent=cs.slice(-n);
+
+  let pv=0;
+  let vol=0;
+
+  for(const x of recent){
+    const typical=(x.h+x.l+x.c)/3;
+    pv+=typical*x.v;
+    vol+=x.v;
+  }
+
+  return vol?pv/vol:null;
+}
+
+function volumeRatio(cs,n=20){
+  if(cs.length<n+1)return null;
+
+  const current=cs.at(-1).v;
+  const avg=sma(cs.slice(0,-1).map(x=>x.v),n);
+
+  return avg?current/avg:null;
+}
+
+function bollinger(cs,n=20){
+  if(cs.length<n)return null;
+
+  const a=cs.slice(-n).map(x=>x.c);
+  const m=sma(a,n);
+
+  let s=0;
+
+  for(const x of a){
+    s+=(x-m)**2;
+  }
+
+  const sd=Math.sqrt(s/n);
+  const upper=m+2*sd;
+  const lower=m-2*sd;
+  const p=(a.at(-1)-lower)/(upper-lower);
+
+  return {
+    middle:m,
+    upper,
+    lower,
+    position:p*100
+  };
+}
+
+/* =========================================================
+   ADX
+========================================================= */
+
+function adx(cs,n=14){
+
+  if(cs.length<n*2+2)return null;
+
+  const tr=[];
+  const plus=[];
+  const minus=[];
+
+  for(let i=1;i<cs.length;i++){
+
+    const h=cs[i].h;
+    const l=cs[i].l;
+    const ph=cs[i-1].h;
+    const pl=cs[i-1].l;
+    const pc=cs[i-1].c;
+
+    tr.push(
+      Math.max(
+        h-l,
+        Math.abs(h-pc),
+        Math.abs(l-pc)
+      )
+    );
+
+    const up=h-ph;
+    const down=pl-l;
+
+    plus.push(up>down&&up>0?up:0);
+    minus.push(down>up&&down>0?down:0);
+  }
+
+  const atrv=sma(tr,n);
+
+  if(!atrv)return null;
+
+  const p=sma(plus,n);
+  const m=sma(minus,n);
+
+  if(!p||!m)return null;
+
+  const pdi=100*p/atrv;
+  const mdi=100*m/atrv;
+
+  const dx=100*Math.abs(pdi-mdi)/(pdi+mdi||1);
+
+  return dx;
+}
+
+/* =========================================================
+   MARKET STRUCTURE
+========================================================= */
+
+function structure(cs){
+
+  if(cs.length<10){
+    return {
+      bosBuy:false,
+      bosSell:false
+    };
+  }
+
+  const last=cs.at(-1);
+
+  const prevHigh=Math.max(
+    ...cs.slice(-8,-1).map(x=>x.h)
+  );
+
+  const prevLow=Math.min(
+    ...cs.slice(-8,-1).map(x=>x.l)
+  );
+
+  return {
+    bosBuy:last.c>prevHigh,
+    bosSell:last.c<prevLow
+  };
+}
+
+/* =========================================================
+   REVERSAL ENGINE
+========================================================= */
+
+function reversal(cs,trend,atrv){
+
+  const last=cs.at(-1);
+  const prev=cs.at(-2);
+
+  const body=Math.abs(last.c-last.o);
+  const range=Math.max(last.h-last.l,0.0000001);
+
+  const upperWick=
+    last.h-Math.max(last.o,last.c);
+
+  const lowerWick=
+    Math.min(last.o,last.c)-last.l;
+
+  const bullishClose=last.c>last.o;
+  const bearishClose=last.c<last.o;
+
+  const strongBody=body/range>=0.35;
+
+  /*
+    BEARISH trend:
+    Look for bullish reversal:
+    long lower wick + bullish close + strong body
+  */
+
+  const bullishReversal=
+    trend==="BEARISH" &&
+    lowerWick>=body*1.2 &&
+    bullishClose &&
+    strongBody &&
+    last.c>prev.c;
+
+  /*
+    BULLISH trend:
+    Look for bearish reversal:
+    long upper wick + bearish close + strong body
+  */
+
+  const bearishReversal=
+    trend==="BULLISH" &&
+    upperWick>=body*1.2 &&
+    bearishClose &&
+    strongBody &&
+    last.c<prev.c;
+
+  return {
+    bullishReversal,
+    bearishReversal,
+    body,
+    upperWick,
+    lowerWick,
+    range
+  };
+}
+
+/* =========================================================
+   ANALYSIS
+========================================================= */
+
+function analyze(){
+
+  if(candles.length<220)return;
+
+  const cs=candles;
+  const c=closes();
+
+  const price=c.at(-1);
+
+  const e50=ema(c,50);
+  const e200=ema(c,200);
+  const r=rsi(c,14);
+  const a=atr(cs,14);
+  const m=macd(c);
+  const v=vwap(cs,50);
+  const vr=volumeRatio(cs,20);
+  const st=stochastic(cs,14);
+  const bb=bollinger(cs,20);
+  const ax=adx(cs,14);
+
+  const trend=
+    e50>e200 ? "BULLISH" : "BEARISH";
+
+  const mom=
+    c.at(-1)>c.at(-4) ? "BULLISH" :
+    c.at(-1)<c.at(-4) ? "BEARISH" :
+    "MIXED";
+
+  const structureResult=structure(cs);
+
+  const rev=reversal(cs,trend,a||0);
+
+  /*
+    11 confirmations
+  */
+
+  let buy=0;
+  let sell=0;
+
+  const checks=[];
+
+  /* 1 Trend EMA */
+  const trendBuy=e50>e200;
+  const trendSell=e50<e200;
+
+  if(trendBuy)buy++;
+  if(trendSell)sell++;
+
+  checks.push({
+    name:"Trend EMA",
+    buy:trendBuy,
+    sell:trendSell
+  });
+
+  /* 2 ADX */
+  const adxStrong=ax!==null&&ax>=20;
+
+  if(adxStrong&&trendBuy)buy++;
+  if(adxStrong&&trendSell)sell++;
+
+  checks.push({
+    name:"ADX 14",
+    buy:adxStrong&&trendBuy,
+    sell:adxStrong&&trendSell
+  });
+
+  /* 3 RSI */
+  const rBuy=r>50;
+  const rSell=r<50;
+
+  if(rBuy)buy++;
+  if(rSell)sell++;
+
+  checks.push({
+    name:"RSI 14",
+    buy:rBuy,
+    sell:rSell
+  });
+
+  /* 4 MACD */
+  const macBuy=m>0;
+  const macSell=m<0;
+
+  if(macBuy)buy++;
+  if(macSell)sell++;
+
+  checks.push({
+    name:"MACD",
+    buy:macBuy,
+    sell:macSell
+  });
+
+  /* 5 VWAP */
+  const vwBuy=price>v;
+  const vwSell=price<v;
+
+  if(vwBuy)buy++;
+  if(vwSell)sell++;
+
+  checks.push({
+    name:"VWAP",
+    buy:vwBuy,
+    sell:vwSell
+  });
+
+  /* 6 Volume */
+  const volumeStrong=vr!==null&&vr>=1;
+
+  const volBuy=volumeStrong&&price>c.at(-2);
+  const volSell=volumeStrong&&price<c.at(-2);
+
+  if(volBuy)buy++;
+  if(volSell)sell++;
+
+  checks.push({
+    name:"Volume",
+    buy:volBuy,
+    sell:volSell
+  });
+
+  /* 7 BOS */
+  if(structureResult.bosBuy)buy++;
+  if(structureResult.bosSell)sell++;
+
+  checks.push({
+    name:"BOS",
+    buy:structureResult.bosBuy,
+    sell:structureResult.bosSell
+  });
+
+  /* 8 Liquidity / FVG */
+  const liquidityBuy=
+    rev.lowerWick>Math.max(rev.body*1.3,(a||0)*0.35);
+
+  const liquiditySell=
+    rev.upperWick>Math.max(rev.body*1.3,(a||0)*0.35);
+
+  if(liquidityBuy)buy++;
+  if(liquiditySell)sell++;
+
+  checks.push({
+    name:"Liquidity/FVG",
+    buy:liquidityBuy,
+    sell:liquiditySell
+  });
+
+  /* 9 Stochastic */
+  const stBuy=st<80&&st>35;
+  const stSell=st>20&&st<65;
+
+  if(stBuy)buy++;
+  if(stSell)sell++;
+
+  checks.push({
+    name:"Stochastic",
+    buy:stBuy,
+    sell:stSell
+  });
+
+  /* 10 Bollinger */
+  const bbBuy=bb&&bb.position<75;
+  const bbSell=bb&&bb.position>25;
+
+  if(bbBuy)buy++;
+  if(bbSell)sell++;
+
+  checks.push({
+    name:"Bollinger",
+    buy:bbBuy,
+    sell:bbSell
+  });
+
+  /* 11 Price / EMA */
+  const pBuy=price>e50;
+  const pSell=price<e50;
+
+  if(pBuy)buy++;
+  if(pSell)sell++;
+
+  checks.push({
+    name:"Price/EMA",
+    buy:pBuy,
+    sell:pSell
+  });
+
+  /*
+    REVERSAL BONUS
+
+    This is the important new V27.8 feature.
+
+    A reversal is NOT accepted from one wick alone.
+    It requires:
+      - opposite wick
+      - closed candle
+      - body confirmation
+      - price movement
+  */
+
+  let reversalBuy=false;
+  let reversalSell=false;
+
+  if(rev.bullishReversal){
+    reversalBuy=true;
+    buy+=2;
+  }
+
+  if(rev.bearishReversal){
+    reversalSell=true;
+    sell+=2;
+  }
+
+  const total=11;
+
+  let side="NONE";
+  let score=0;
+
+  /*
+    Main trend signal
+  */
+
+  if(buy>=sell){
+    side="BUY";
+    score=buy;
+  }else{
+    side="SELL";
+    score=sell;
+  }
+
+  /*
+    Reversal can temporarily override the main direction
+    only when the reversal candle is strong.
+  */
+
+  let reversalActive=false;
+
+  if(reversalBuy && trend==="BEARISH"){
+    side="BUY";
+    reversalActive=true;
+  }
+
+  if(reversalSell && trend==="BULLISH"){
+    side="SELL";
+    reversalActive=true;
+  }
+
+  /*
+    Confidence calculation.
+    Bonus is limited so one candle cannot create a fake
+    100% signal.
+  */
+
+  let confidence=Math.round(
+    Math.min(95,(score/total)*100)
+  );
+
+  if(reversalActive){
+    confidence=Math.min(95,confidence+8);
+  }
+
+  /*
+    Trend-first safety filter.
+    Normal signals must agree with trend.
+    Reversal signals are allowed only if the
+    reversal pattern is strong.
+  */
+
+  let allowed=false;
+  let filter="BLOCKED";
+
+  if(side==="BUY"){
+
+    if(trend==="BULLISH"){
+      allowed=true;
+      filter="BUY ALLOWED";
+    }
+
+    if(trend==="BEARISH"&&reversalBuy){
+      allowed=true;
+      filter="BUY REVERSAL";
+    }
+
+  }
+
+  if(side==="SELL"){
+
+    if(trend==="BEARISH"){
+      allowed=true;
+      filter="SELL ALLOWED";
+    }
+
+    if(trend==="BULLISH"&&reversalSell){
+      allowed=true;
+      filter="SELL REVERSAL";
+    }
+
+  }
+
+  /*
+    Final threshold:
+      8/11
+      75%
+  */
+
+  const finalSignal=
+    allowed &&
+    score>=8 &&
+    confidence>=75;
+
+  if(finalSignal){
+
+    setLevels(
+      side,
+      price,
+      a||0,
+      reversalActive
+    );
+
+  }else{
+
+    clearLevels();
+
+  }
+
+  updateUI({
+    side:finalSignal?side:"NONE",
+    candidate:side,
+    score,
+    confidence,
+    price,
+    r,
+    a,
+    e50,
+    e200,
+    trend,
+    filter,
+    mom,
+    ax,
+    m,
+    v,
+    vr,
+    bb,
+    st,
+    checks,
+    reversalActive,
+    rev
+  });
+
+  drawChart();
+}
+
+/* =========================================================
+   LEVELS
+========================================================= */
+
+function setLevels(side,entry,a,reversal=false){
+
+  if(!entry)return;
+
+  /*
+    Slightly wider SL for reversal.
+    Normal = 1.5 ATR
+    Reversal = 1.7 ATR
+  */
+
+  const mult=reversal?1.7:1.5;
+
+  if(side==="BUY"){
+
+    const sl=entry-a*mult;
+    const risk=entry-sl;
+
+    levels={
+      side,
+      entry,
+      sl,
+      tp1:entry+risk,
+      tp2:entry+risk*2,
+      rr:"1:1 / 1:2"
+    };
+
+  }else{
+
+    const sl=entry+a*mult;
+    const risk=sl-entry;
+
+    levels={
+      side,
+      entry,
+      sl,
+      tp1:entry-risk,
+      tp2:entry-risk*2,
+      rr:"1:1 / 1:2"
+    };
+  }
+}
+
+function clearLevels(){
+  levels=null;
+
+  $("entry").textContent="—";
+  $("sl").textContent="—";
+  $("tp1").textContent="—";
+  $("tp2").textContent="—";
+  $("rr").textContent="—";
+}
+
+function showLevels(){
+
+  if(!levels)return;
+
+  $("entry").textContent=fmt(levels.entry);
+  $("sl").textContent=fmt(levels.sl);
+  $("tp1").textContent=fmt(levels.tp1);
+  $("tp2").textContent=fmt(levels.tp2);
+  $("rr").textContent=levels.rr;
+}
+
+/* =========================================================
+   UI
+========================================================= */
+
+function updateUI(x){
+
+  const signal=$("signal");
+
+  signal.className="signal";
+
+  if(x.side==="BUY"){
+    signal.textContent="BUY";
+    signal.classList.add("buy");
+  }else if(x.side==="SELL"){
+    signal.textContent="SELL";
+    signal.classList.add("sell");
+  }else{
+    signal.textContent="NO TRADE";
+    signal.classList.add("no");
+  }
+
+  $("confidence").textContent=x.confidence+"%";
+  $("confirmations").textContent=
+    x.score+"/11";
+
+  $("price").textContent=fmt(x.price);
+  $("rsi").textContent=fmt(x.r);
+  $("atr").textContent=fmt(x.a);
+  $("ema50").textContent=fmt(x.e50);
+  $("ema200").textContent=fmt(x.e200);
+
+  $("trend").textContent=x.trend;
+  $("filter").textContent=x.filter;
+  $("momentum").textContent=x.mom;
+
+  $("adx").textContent=fmt(x.ax);
+  $("macd").textContent=fmt(x.m);
+  $("vwap").textContent=fmt(x.v);
+
+  $("volume").textContent=
+    x.vr===null?"—":x.vr.toFixed(2)+"x";
+
+  $("bb").textContent=
+    x.bb?x.bb.position.toFixed(1)+"%":"—";
+
+  $("stoch").textContent=fmt(x.st);
+
+  showLevels();
+
+  let description="";
+
+  if(x.side==="NONE"){
+    description=
+      `${x.candidate} candidate • ${x.score}/11 confirmations • ${x.confidence}% • `+
+      `Main trend: ${x.trend} • ${x.filter} • Need 8/11 + 75%`;
+  }else{
+
+    if(x.reversalActive){
+
+      description=
+        `${x.side} • ${x.score}/11 confirmations • ${x.confidence}% • `+
+        `1–5 MIN REVERSAL CONFIRMED • ${x.trend} trend → reversal`;
+
+    }else{
+
+      description=
+        `${x.side} • ${x.score}/11 confirmations • ${x.confidence}% • `+
+        `Main trend setup confirmed`;
+
+    }
+  }
+
+  $("reason").textContent=description;
+
+  renderConfirmations(x.checks);
 
 }
 
-function draw(){
+/* =========================================================
+   CONFIRMATION UI
+========================================================= */
 
-let c=$('chart');
+function renderConfirmations(checks){
 
-let x=c.getContext('2d');
+  const box=$("confirmGrid");
+  box.innerHTML="";
 
-let W=c.width;
-let H=c.height;
+  checks.forEach((x,i)=>{
 
-x.clearRect(0,0,W,H);
+    const div=document.createElement("div");
+    div.className="confirm";
 
-x.fillStyle='#08131d';
-x.fillRect(0,0,W,H);
+    const buy=x.buy
+      ?`<span class="okbuy">BUY ✓</span>`
+      :`<span class="fail">BUY ×</span>`;
 
-if(!cs.length)return;
+    const sell=x.sell
+      ?`<span class="oksel">SELL ✓</span>`
+      :`<span class="fail">SELL ×</span>`;
 
-let a=cs.slice(-100);
+    div.innerHTML=
+      `${i+1}. ${x.name}: ${buy} ${sell}`;
 
-let mn=Math.min(
-...a.map(z=>z.l)
-);
-
-let mx=Math.max(
-...a.map(z=>z.h)
-);
-
-let pad=35;
-
-if(tradeLevels){
-
-mn=Math.min(
-mn,
-tradeLevels.sl,
-tradeLevels.tp1,
-tradeLevels.tp2,
-tradeLevels.entry
-);
-
-mx=Math.max(
-mx,
-tradeLevels.sl,
-tradeLevels.tp1,
-tradeLevels.tp2,
-tradeLevels.entry
-);
-
+    box.appendChild(div);
+  });
 }
 
-let py=v=>
-H-pad-
-(v-mn)/(mx-mn||1)*
-(H-pad*2);
+/* =========================================================
+   CHART
+========================================================= */
 
-let st=W/a.length;
+function drawChart(){
 
-let bw=Math.max(
-3,
-st*.62
-);
+  const canvas=$("chart");
+  const ctx=canvas.getContext("2d");
 
-x.strokeStyle='#1b2b38';
+  const rect=canvas.getBoundingClientRect();
 
-for(let i=0;i<6;i++){
+  const dpr=window.devicePixelRatio||1;
 
-let y=
-pad+i*(H-pad*2)/5;
+  canvas.width=rect.width*dpr;
+  canvas.height=rect.height*dpr;
 
-x.beginPath();
-x.moveTo(0,y);
-x.lineTo(W,y);
-x.stroke();
+  ctx.setTransform(dpr,0,0,dpr,0,0);
 
+  const w=rect.width;
+  const h=rect.height;
+
+  ctx.clearRect(0,0,w,h);
+
+  if(candles.length<2)return;
+
+  const cs=candles.slice(-80);
+
+  let min=Math.min(...cs.map(x=>x.l));
+  let max=Math.max(...cs.map(x=>x.h));
+
+  if(levels){
+    min=Math.min(min,levels.sl,levels.tp2);
+    max=Math.max(max,levels.sl,levels.tp2);
+  }
+
+  const pad=25;
+
+  const scaleY=
+    (h-pad*2)/(max-min||1);
+
+  function y(p){
+    return h-pad-(p-min)*scaleY;
+  }
+
+  /* Grid */
+
+  ctx.strokeStyle="#132735";
+  ctx.lineWidth=1;
+
+  for(let i=1;i<5;i++){
+
+    const gy=i*h/5;
+
+    ctx.beginPath();
+    ctx.moveTo(0,gy);
+    ctx.lineTo(w,gy);
+    ctx.stroke();
+  }
+
+  const cw=w/cs.length;
+
+  cs.forEach((c,i)=>{
+
+    const x=i*cw+cw/2;
+
+    const open=y(c.o);
+    const close=y(c.c);
+    const high=y(c.h);
+    const low=y(c.l);
+
+    const up=c.c>=c.o;
+
+    ctx.strokeStyle=up?"#38ef9b":"#ff6070";
+    ctx.fillStyle=up?"#38ef9b":"#ff6070";
+
+    ctx.beginPath();
+    ctx.moveTo(x,high);
+    ctx.lineTo(x,low);
+    ctx.stroke();
+
+    const bodyTop=Math.min(open,close);
+    const bodyH=Math.max(2,Math.abs(close-open));
+
+    ctx.fillRect(
+      x-cw*0.30,
+      bodyTop,
+      cw*0.60,
+      bodyH
+    );
+  });
+
+  /* Levels */
+
+  if(levels){
+
+    drawLevel(levels.entry,"#62a8ff","ENTRY");
+    drawLevel(levels.sl,"#ff6070","SL");
+    drawLevel(levels.tp1,"#38ef9b","TP1");
+    drawLevel(levels.tp2,"#38ef9b","TP2");
+  }
+
+  function drawLevel(price,color,label){
+
+    const yy=y(price);
+
+    ctx.strokeStyle=color;
+    ctx.setLineDash([5,5]);
+    ctx.lineWidth=2;
+
+    ctx.beginPath();
+    ctx.moveTo(0,yy);
+    ctx.lineTo(w,yy);
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+
+    ctx.fillStyle=color;
+    ctx.font="12px monospace";
+
+    ctx.fillText(
+      `${label} ${fmt(price)}`,
+      6,
+      Math.max(14,yy-5)
+    );
+  }
+
+  const last=cs.at(-1);
+
+  $("chartInfo").textContent=
+    `${currentSource.toUpperCase()} • ${currentSymbol} • ${currentTF} • `+
+    `${new Date(last.t).toLocaleString()} • ${fmt(last.c)}`;
 }
 
-a.forEach((z,i)=>{
+/* =========================================================
+   REGISTRY
+========================================================= */
 
-let xx=
-i*st+st/2;
+function renderRegistry(){
 
-let yo=py(z.o);
-let yc=py(z.c);
+  const box=$("registry");
+  box.innerHTML="";
 
-x.strokeStyle=
-z.c>=z.o
-?'#43e58b'
-:'#ff5f6d';
+  SOURCES.forEach((s,i)=>{
 
-x.fillStyle=x.strokeStyle;
+    const row=document.createElement("div");
+    row.className="regrow";
 
-x.beginPath();
+    row.innerHTML=`
+      <div>${String(i+1).padStart(2,"0")}.</div>
+      <div>${s.name}</div>
+      <div>Crypto</div>
+      <div>${s.status}</div>
+    `;
 
-x.moveTo(xx,py(z.h));
-x.lineTo(xx,py(z.l));
+    box.appendChild(row);
+  });
+}
 
-x.stroke();
+/* =========================================================
+   WEBSOCKETS
+========================================================= */
 
-x.fillRect(
-xx-bw/2,
-Math.min(yo,yc),
-bw,
-Math.max(
-1,
-Math.abs(yc-yo)
-)
-);
+function closeSocket(){
 
+  if(socket){
+
+    try{
+      socket.close();
+    }catch(e){}
+
+    socket=null;
+  }
+
+  if(reconnectTimer){
+    clearTimeout(reconnectTimer);
+    reconnectTimer=null;
+  }
+}
+
+function connectWS(){
+
+  closeSocket();
+
+  if(currentSource==="binance"){
+
+    const sym=currentSymbol.toLowerCase();
+
+    socket=new WebSocket(
+      `wss://data-stream.binance.vision/ws/${sym}@kline_${currentTF}`
+    );
+
+    socket.onmessage=e=>{
+
+      const d=JSON.parse(e.data);
+      const k=d.k;
+
+      if(!k)return;
+
+      if(k.x){
+        putClosed({
+          t:+k.t,
+          o:+k.o,
+          h:+k.h,
+          l:+k.l,
+          c:+k.c,
+          v:+k.v
+        });
+      }
+    };
+  }
+
+  else if(currentSource==="bybit"){
+
+    socket=new WebSocket(
+      "wss://stream.bybit.com/v5/public/spot"
+    );
+
+    socket.onopen=()=>{
+
+      socket.send(JSON.stringify({
+        op:"subscribe",
+        args:[
+          `kline.${tfMinutes(currentTF)}.${currentSymbol}`
+        ]
+      }));
+    };
+
+    socket.onmessage=e=>{
+
+      const d=JSON.parse(e.data);
+
+      if(!d.data||!Array.isArray(d.data))return;
+
+      const k=d.data[0];
+
+      if(!k)return;
+
+      if(k.confirm){
+        putClosed({
+          t:+k.start,
+          o:+k.open,
+          h:+k.high,
+          l:+k.low,
+          c:+k.close,
+          v:+k.volume
+        });
+      }
+    };
+  }
+
+  else if(currentSource==="okx"){
+
+    socket=new WebSocket(
+      "wss://ws.okx.com:8443/ws/v5/public"
+    );
+
+    socket.onopen=()=>{
+
+      socket.send(JSON.stringify({
+        op:"subscribe",
+        args:[{
+          channel:"candle"+currentTF,
+          instId:currentSymbol
+        }]
+      }));
+    };
+
+    socket.onmessage=e=>{
+
+      const d=JSON.parse(e.data);
+
+      if(!d.data)return;
+
+      d.data.forEach(k=>{
+
+        /*
+          OKX:
+          [ts,o,h,l,c,vol,...,confirm]
+        */
+
+        if(k[8]==="1" || k[8]===1){
+
+          putClosed({
+            t:+k[0],
+            o:+k[1],
+            h:+k[2],
+            l:+k[3],
+            c:+k[4],
+            v:+k[5]
+          });
+        }
+      });
+    };
+  }
+
+  else if(currentSource==="coinbase"){
+
+    socket=new WebSocket(
+      "wss://advanced-trade-ws.coinbase.com"
+    );
+
+    socket.onopen=()=>{
+
+      socket.send(JSON.stringify({
+        type:"subscribe",
+        product_ids:[currentSymbol],
+        channel_ids:["candles"]
+      }));
+    };
+
+    socket.onmessage=e=>{
+
+      /*
+        Coinbase Advanced WS formats may change.
+        History remains the source of truth.
+      */
+
+      try{
+
+        const d=JSON.parse(e.data);
+
+        const events=d.events||[];
+
+        events.forEach(ev=>{
+
+          (ev.candles||[]).forEach(k=>{
+
+            if(k.start){
+
+              putClosed({
+                t:+k.start*1000,
+                o:+k.open,
+                h:+k.high,
+                l:+k.low,
+                c:+k.close,
+                v:+k.volume
+              });
+            }
+          });
+
+        });
+
+      }catch(err){}
+    };
+  }
+
+  else if(currentSource==="kraken"){
+
+    socket=new WebSocket(
+      "wss://ws.kraken.com/v2"
+    );
+
+    socket.onopen=()=>{
+
+      socket.send(JSON.stringify({
+        method:"subscribe",
+        params:{
+          channel:"ohlc",
+          symbol:[currentSymbol],
+          interval:tfMinutes(currentTF)
+        }
+      }));
+    };
+
+    socket.onmessage=e=>{
+
+      try{
+
+        const d=JSON.parse(e.data);
+
+        if(d.channel!=="ohlc"||!d.data)return;
+
+        d.data.forEach(k=>{
+
+          if(k.confirmed){
+
+            putClosed({
+              t:+k.timestamp,
+              o:+k.open,
+              h:+k.high,
+              l:+k.low,
+              c:+k.close,
+              v:+k.volume
+            });
+          }
+
+        });
+
+      }catch(err){}
+    };
+  }
+
+  else if(currentSource==="gateio"){
+
+    socket=new WebSocket(
+      "wss://api.gateio.ws/ws/v4/"
+    );
+
+    socket.onopen=()=>{
+
+      const sym=currentSymbol.replace("USDT","_USDT");
+
+      socket.send(JSON.stringify({
+        time:Math.floor(Date.now()/1000),
+        channel:"spot.candlesticks",
+        event:"subscribe",
+        payload:[currentTF,sym]
+      }));
+    };
+
+    socket.onmessage=e=>{
+
+      try{
+
+        const d=JSON.parse(e.data);
+
+        if(d.channel!=="spot.candlesticks")return;
+
+        const x=d.result?.[0];
+
+        if(!x)return;
+
+        /*
+          Gate candlestick:
+          t,v,c,h,l,o,amount
+        */
+
+        if(x.w===true || x.w==="true"){
+
+          putClosed({
+            t:+x.t*1000,
+            o:+x.o,
+            h:+x.h,
+            l:+x.l,
+            c:+x.c,
+            v:+x.v
+          });
+        }
+
+      }catch(err){}
+    };
+  }
+
+  else if(currentSource==="bitget"){
+
+    socket=new WebSocket(
+      "wss://ws.bitget.com/v2/ws/public"
+    );
+
+    socket.onopen=()=>{
+
+      socket.send(JSON.stringify({
+        op:"subscribe",
+        args:[{
+          instType:"SPOT",
+          channel:"candle"+currentTF,
+          instId:currentSymbol
+        }]
+      }));
+    };
+
+    socket.onmessage=e=>{
+
+      try{
+
+        const d=JSON.parse(e.data);
+
+        if(!d.data)return;
+
+        const k=d.data[0];
+
+        if(!k)return;
+
+        putClosed({
+          t:+k[0],
+          o:+k[1],
+          h:+k[2],
+          l:+k[3],
+          c:+k[4],
+          v:+k[5]
+        });
+
+      }catch(err){}
+    };
+  }
+
+  else if(currentSource==="mexc"){
+
+    socket=new WebSocket(
+      "wss://wbs-api.mexc.com/ws"
+    );
+
+    socket.onopen=()=>{
+
+      socket.send(JSON.stringify({
+        method:"SUBSCRIPTION",
+        params:[
+          `spot@public.kline.v3.api.pb@${currentSymbol}@${mexcTF(currentTF)}`
+        ],
+        id:1
+      }));
+    };
+
+    socket.onmessage=e=>{
+
+      /*
+        MEXC can send protobuf/binary depending on stream.
+        REST remains authoritative if WS format cannot be decoded.
+      */
+
+      if(typeof e.data==="string"){
+
+        try{
+
+          const d=JSON.parse(e.data);
+
+          const k=d.publicspotkline;
+
+          if(k){
+
+            putClosed({
+              t:+k.t*1000,
+              o:+k.o,
+              h:+k.h,
+              l:+k.l,
+              c:+k.c,
+              v:+k.v
+            });
+          }
+
+        }catch(err){}
+      }
+    };
+  }
+
+  if(socket){
+
+    socket.onopen=()=>{
+
+      $("feed").textContent="LIVE";
+      $("sourceStatus").textContent="LIVE";
+    };
+
+    socket.onerror=()=>{
+
+      $("feed").textContent="ERROR";
+    };
+
+    socket.onclose=()=>{
+
+      $("feed").textContent="RECONNECTING";
+
+      reconnectTimer=setTimeout(
+        connectWS,
+        5000
+      );
+    };
+  }
+}
+
+function mexcTF(tf){
+
+  const map={
+    "1m":"Min1",
+    "5m":"Min5",
+    "15m":"Min15",
+    "30m":"Min30",
+    "1h":"Hour1",
+    "4h":"Hour4"
+  };
+
+  return map[tf]||"Min1";
+}
+
+/* =========================================================
+   CLOSED CANDLE HANDLER
+========================================================= */
+
+function putClosed(c){
+
+  const x=normalizeCandle(c);
+
+  if(!x.t||!x.c)return;
+
+  /*
+    Never duplicate candles.
+  */
+
+  const last=candles.at(-1);
+
+  if(last && last.t===x.t){
+
+    candles[candles.length-1]=x;
+
+  }else{
+
+    if(!last || x.t>last.t){
+
+      candles.push(x);
+
+      candles=candles.slice(-500);
+
+    }
+  }
+
+  /*
+    Keep analysis strictly closed.
+  */
+
+  $("closed").textContent=candles.length;
+
+  if(x.t!==lastClosedTime){
+
+    lastClosedTime=x.t;
+
+    analyze();
+  }
+}
+
+/* =========================================================
+   CONNECT
+========================================================= */
+
+async function connectLive(){
+
+  currentSource=$("source").value;
+  currentSymbol=$("symbol").value;
+  currentTF=$("tf").value;
+
+  $("feed").textContent="LOADING";
+  $("sourceStatus").textContent="LOADING";
+
+  clearLevels();
+
+  await loadHistory();
+
+  connectWS();
+
+  /*
+    History refresh is used as a fallback.
+    It also prevents stale candles if a WS provider
+    does not deliver closed-candle events correctly.
+  */
+
+  setTimeout(loadHistory,15000);
+}
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+$("source").addEventListener("change",()=>{
+
+  currentSource=$("source").value;
+
+  fillSymbols();
+
+  clearLevels();
+
+  connectLive();
 });
 
-if(tradeLevels){
+$("symbol").addEventListener("change",()=>{
 
-const levels=[
-{
-name:'ENTRY',
-value:tradeLevels.entry,
-color:'#62a8ff'
-},
-{
-name:'SL',
-value:tradeLevels.sl,
-color:'#ff5f6d'
-},
-{
-name:'TP1',
-value:tradeLevels.tp1,
-color:'#43e58b'
-},
-{
-name:'TP2',
-value:tradeLevels.tp2,
-color:'#43e58b'
-}
-];
+  currentSymbol=$("symbol").value;
 
-x.save();
-
-x.font='bold 12px Arial';
-x.lineWidth=1.5;
-
-levels.forEach(L=>{
-
-let y=py(L.value);
-
-if(y<8||y>H-8)return;
-
-x.strokeStyle=L.color;
-
-x.setLineDash([7,5]);
-
-x.beginPath();
-
-x.moveTo(0,y);
-x.lineTo(W,y);
-
-x.stroke();
-
-x.setLineDash([]);
-
-x.fillStyle=L.color;
-
-x.fillText(
-`${L.name} ${fmt(L.value)}`,
-8,
-Math.max(14,y-5)
-);
-
+  connectLive();
 });
 
-x.restore();
+$("tf").addEventListener("change",()=>{
 
-}
+  currentTF=$("tf").value;
 
-let q=a.at(-1);
+  connectLive();
+});
 
-$('info').textContent=
-`${cur?.name||''} • ${$('symbol').value} • ${$('tf').value} • ${new Date(q.t).toLocaleString()} • ${fmt(q.c)}${
-tradeLevels
-?' • '+tradeLevels.side+' levels active'
-:''
-}`;
+$("connect").addEventListener(
+  "click",
+  connectLive
+);
 
-}
+window.addEventListener(
+  "resize",
+  drawChart
+);
 
-init();
+/* =========================================================
+   INIT
+========================================================= */
+
+fillSources();
+renderRegistry();
+
+$("source").value="binance";
+
+currentSource="binance";
+
+fillSymbols();
+
+$("symbol").value="BTCUSDT";
+
+currentSymbol="BTCUSDT";
+
+$("tf").value="1m";
+
+currentTF="1m";
+
+connectLive();
 
 </script>
+
 </body>
 </html>
