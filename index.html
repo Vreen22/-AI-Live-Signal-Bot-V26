@@ -1,9 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI Live Signal Bot V28</title>
+<title>AI Live Signal Bot V29</title>
 <style>
 :root{--bg:#071018;--p:#0d1924;--l:#203040;--t:#eaf3fb;--m:#8ea4b8;--g:#43e58b;--r:#ff5f6d;--y:#ffd166;--b:#62a8ff}
 *{box-sizing:border-box}
@@ -56,9 +56,9 @@ canvas{height:430px}
 <body>
 <div class="wrap">
 
-<div class="title">AI Live Signal Bot V28 — Multi Source</div>
+<div class="title">AI Live Signal Bot V29 — Multi Source</div>
 <div class="sub">
-8 real public crypto feeds + closed-candle reversal engine • AUTO TRADE OFF
+8 real public crypto feeds + robust closed-candle reversal AI • AUTO TRADE OFF
 </div>
 
 <div class="panel">
@@ -72,9 +72,9 @@ canvas{height:430px}
 <div>
 <label>Market</label>
 <select id="market">
-<option>Crypto</option>
-<option>Forex / CFD</option>
-<option>Forex / Metals</option>
+<option value="Crypto">Crypto</option>
+<option value="Forex">Forex</option>
+<option value="Metals">Metals</option>
 </select>
 </div>
 
@@ -104,92 +104,108 @@ canvas{height:430px}
 </div>
 
 <div class="status">
-<span class="badge">Feed: <b id="feed">OFF</b></span>
+<span class="badge">Feed: <b id="feed" class="live">OFF</b></span>
 <span class="badge">Source: <b id="ss">—</b></span>
 <span class="badge">Closed: <b id="count">0</b></span>
-<span class="badge">AUTO TRADE: <b>OFF</b></span>
+<span class="badge">AUTO TRADE: <b style="color:var(--y)">OFF</b></span>
 </div>
 </div>
 
 <div class="grid">
 
-<div>
-
 <div class="panel">
 
-<div style="color:var(--m);font-size:12px">AI SIGNAL</div>
-
+<div style="color:var(--m)">AI SIGNAL</div>
 <div id="signal" class="signal none">NO TRADE</div>
 
-<div id="reason" style="color:var(--m)">Waiting…</div>
+<div id="reason" style="color:var(--m);line-height:1.5">
+Waiting...
+</div>
 
 <div class="metrics">
 
-<div class="metric">Confidence
+<div class="metric">
+Confidence
 <b id="conf">0%</b>
 </div>
 
-<div class="metric">Confirmations
+<div class="metric">
+Confirmations
 <b id="confirm">0/11</b>
 </div>
 
-<div class="metric">Price
+<div class="metric">
+Price
 <b id="price">—</b>
 </div>
 
-<div class="metric">RSI 14
+<div class="metric">
+RSI 14
 <b id="rsi">—</b>
 </div>
 
-<div class="metric">ATR 14
+<div class="metric">
+ATR 14
 <b id="atr">—</b>
 </div>
 
-<div class="metric">EMA 50
+<div class="metric">
+EMA 50
 <b id="e50">—</b>
 </div>
 
-<div class="metric">EMA 200
+<div class="metric">
+EMA 200
 <b id="e200">—</b>
 </div>
 
-<div class="metric">Trend
+<div class="metric">
+Trend
 <b id="trend">—</b>
 </div>
 
-<div class="metric">Signal Filter
+<div class="metric">
+Signal Filter
 <b id="filter">WAIT</b>
 </div>
 
-<div class="metric">Signal Window
+<div class="metric">
+Signal Window
 <b id="window">1–5 min</b>
 </div>
 
-<div class="metric">Momentum
+<div class="metric">
+Momentum
 <b id="mom">—</b>
 </div>
 
-<div class="metric">ADX 14
+<div class="metric">
+ADX 14
 <b id="adx">—</b>
 </div>
 
-<div class="metric">MACD
+<div class="metric">
+MACD
 <b id="macd">—</b>
 </div>
 
-<div class="metric">VWAP
+<div class="metric">
+VWAP
 <b id="vwap">—</b>
 </div>
 
-<div class="metric">Volume Ratio
+<div class="metric">
+Volume Ratio
 <b id="volratio">—</b>
 </div>
 
-<div class="metric">BB Position
+<div class="metric">
+BB Position
 <b id="bbpos">—</b>
 </div>
 
-<div class="metric">Stochastic
+<div class="metric">
+Stochastic
 <b id="stoch">—</b>
 </div>
 
@@ -244,111 +260,147 @@ R:R
 </div>
 </div>
 
-<div class="panel" style="margin-top:12px">
-<b>Source Registry</b>
-<div id="registry" class="log" style="margin-top:8px"></div>
-</div>
-
-</div>
-
 <div class="panel">
-<b>Live Chart — closed candles</b>
-<canvas id="chart" width="1100" height="520"></canvas>
-<div id="info" style="color:var(--m);font-size:12px;margin-top:7px"></div>
-</div>
+
+<h3>Source Registry</h3>
+<pre id="registry" class="log"></pre>
 
 </div>
+
+<div class="panel" style="margin-top:12px">
+
+<h3>Live Chart — closed candles</h3>
+<canvas id="chart" width="1200" height="520"></canvas>
+
+<div id="info" style="color:var(--m);margin-top:8px"></div>
+
+</div>
+
 </div>
 
 <script>
 
-const $=x=>document.getElementById(x);
+const $=id=>document.getElementById(id);
 
-let sources=[],
-ins={},
-cs=[],
-ws=null,
-recon=null,
-cur=null,
-tradeLevels=null,
-liveBar=null;
+let sources=[];
+let cs=[];
+let ws=null;
+let recon=null;
+let cur=null;
+let liveBar=null;
+let tradeLevels=null;
 
 async function init(){
 
-sources=(await (await fetch('/api/sources')).json()).sources;
+try{
 
-ins=await (await fetch('/api/instruments')).json();
+let h=await fetch('/api/health');
+let health=await h.json();
 
-$('source').innerHTML=sources.map(x=>
+let r=await fetch('/api/sources');
+let j=await r.json();
+
+sources=j.sources||[];
+
+$('source').innerHTML=sources.map((x,i)=>
 `<option value="${x.id}">${x.name} — ${x.status}</option>`
 ).join('');
 
 registry();
 
-symbols();
+updateSymbols();
+
+$('market').onchange=updateSymbols;
 
 $('source').onchange=()=>{
-symbols();
-registry();
+updateSymbols();
 };
 
-$('market').onchange=symbols;
+$('tf').onchange=()=>{
+connect();
+};
 
-$('symbol').onchange=connect;
-
-$('tf').onchange=connect;
+$('symbol').onchange=()=>{
+connect();
+};
 
 $('connect').onclick=connect;
 
 connect();
+
+}catch(e){
+
+$('reason').textContent=e.message;
+
 }
 
-function src(){
-return sources.find(x=>x.id===$('source').value)
-}
-
-function symbols(){
-
-let s=src(),
-m=$('market').value;
-
-let a=
-m==='Crypto'
-?(ins.crypto[s?.id]||['BTCUSDT','ETHUSDT'])
-:m==='Forex / CFD'
-?ins.forex
-:ins.metals;
-
-$('symbol').innerHTML=a.map(x=>
-`<option>${x}</option>`
-).join('');
-
-$('ss').textContent=s?.status||'—';
 }
 
 function registry(){
 
 $('registry').textContent=
 sources.map((x,i)=>
-`${String(i+1).padStart(2,'0')}. ${x.name.padEnd(24)} ${x.category.padEnd(16)} ${x.status}`
+`${String(i+1).padStart(2,'0')}. ${x.name.padEnd(24)}
+${x.category.padEnd(16)}
+${x.status}`
 ).join('\n');
+
+}
+
+function updateSymbols(){
+
+let market=$('market').value;
+let id=$('source').value;
+
+let map={
+
+Crypto:[
+'BTCUSDT','ETHUSDT','BNBUSDT','SOLUSDT',
+'XRPUSDT','ADAUSDT','DOGEUSDT',
+'AVAXUSDT','LINKUSDT','LTCUSDT'
+],
+
+Forex:[
+'EURUSD','GBPUSD','USDJPY','AUDUSD',
+'USDCAD','USDCHF','NZDUSD',
+'EURGBP','EURJPY','GBPJPY'
+],
+
+Metals:[
+'XAUUSD','XAGUSD'
+]
+
+};
+
+let arr=map[market]||[];
+
+$('symbol').innerHTML=arr.map(x=>
+`<option value="${x}">${x}</option>`
+).join('');
 
 }
 
 function off(){
 
 if(ws){
+
 try{ws.close()}catch(e){}
+
 ws=null;
+
 }
 
 if(recon){
+
 clearTimeout(recon);
+
 recon=null;
+
 }
 
 $('feed').textContent='OFF';
 $('feed').className='';
+
 }
 
 function live(){
@@ -363,19 +415,13 @@ function resetLevels(){
 tradeLevels=null;
 
 [
-'entry',
-'sl',
-'tp1',
-'tp2',
-'rr',
-'entrySmall',
-'slSmall',
-'tp1Small',
-'tp2Small'
-].forEach(id=>$(id).textContent='—');
+'entry','sl','tp1','tp2','rr',
+'entrySmall','slSmall','tp1Small','tp2Small'
+].forEach(id=>{
+$(id).textContent='—';
+});
 
-if(typeof draw==='function'&&cs.length)
-draw();
+if(typeof draw==='function'&&cs.length)draw();
 
 }
 
@@ -389,61 +435,42 @@ liveBar=null;
 
 resetLevels();
 
-cur=src();
+cur=sources.find(x=>x.id===$('source').value);
 
 $('ss').textContent=cur?.status||'—';
 
 if(cur?.status!=='LIVE'){
 
 $('signal').textContent='NOT CONNECTED';
-
 $('signal').className='signal none';
 
 $('reason').textContent=
 `${cur?.name||'Source'} is listed, but its live adapter is not enabled in this build.`;
 
 $('feed').textContent='NOT CONNECTED';
-
 $('feed').className='bad';
 
 draw();
 
 return;
+
 }
 
 try{
 
-if(cur.id==='binance')
-await binance();
+if(cur.id==='binance')await binance();
+else if(cur.id==='bybit')await bybit();
+else if(cur.id==='okx')await okx();
+else if(cur.id==='coinbase')await coinbase();
+else if(cur.id==='kraken')await kraken();
+else if(cur.id==='gateio')await gateio();
+else if(cur.id==='bitget')await bitget();
+else if(cur.id==='mexc')await mexc();
 
-else if(cur.id==='bybit')
-await bybit();
-
-else if(cur.id==='okx')
-await okx();
-
-else if(cur.id==='coinbase')
-await coinbase();
-
-else if(cur.id==='kraken')
-await kraken();
-
-else if(cur.id==='gateio')
-await gateio();
-
-else if(cur.id==='bitget')
-await bitget();
-
-else if(cur.id==='mexc')
-await mexc();
-
-}
-catch(e){
+}catch(e){
 
 $('feed').textContent='ERROR';
-
 $('feed').className='bad';
-
 $('reason').textContent=e.message;
 
 }
@@ -466,7 +493,6 @@ cs=cs.slice(-500);
 $('count').textContent=cs.length;
 
 analyze();
-
 draw();
 
 }
@@ -476,13 +502,17 @@ function putLive(c){
 if(!c)return;
 
 if(!liveBar){
+
 liveBar={...c};
 return;
+
 }
 
 if(c.t===liveBar.t){
+
 liveBar={...c};
 return;
+
 }
 
 if(c.t>liveBar.t){
@@ -497,7 +527,7 @@ liveBar={...c};
 
 function mapTF(t){
 
-return {
+return{
 '1m':1,
 '5m':5,
 '15m':15,
@@ -511,8 +541,8 @@ return {
 
 async function binance(){
 
-let s=$('symbol').value,
-t=$('tf').value;
+let s=$('symbol').value;
+let t=$('tf').value;
 
 let r=await fetch(
 `https://data-api.binance.vision/api/v3/klines?symbol=${s}&interval=${t}&limit=500`
@@ -521,7 +551,9 @@ let r=await fetch(
 if(!r.ok)
 throw Error('Binance history HTTP '+r.status);
 
-cs=(await r.json())
+let data=await r.json();
+
+cs=data
 .filter(x=>x[6]<=Date.now())
 .map(x=>({
 t:x[0],
@@ -538,7 +570,6 @@ live();
 $('count').textContent=cs.length;
 
 analyze();
-
 draw();
 
 ws=new WebSocket(
@@ -549,7 +580,8 @@ ws.onmessage=e=>{
 
 let k=JSON.parse(e.data).k;
 
-if(k.x)
+if(k&&k.x){
+
 put({
 t:k.t,
 o:+k.o,
@@ -559,6 +591,8 @@ c:+k.c,
 v:+k.v,
 closed:true
 });
+
+}
 
 };
 
@@ -573,8 +607,8 @@ recon=setTimeout(connect,2500);
 
 async function bybit(){
 
-let s=$('symbol').value,
-t=mapTF($('tf').value);
+let s=$('symbol').value;
+let t=mapTF($('tf').value);
 
 let r=await fetch(
 `https://api.bybit.com/v5/market/kline?category=spot&symbol=${s}&interval=${t}&limit=500`
@@ -602,35 +636,46 @@ live();
 $('count').textContent=cs.length;
 
 analyze();
-
 draw();
 
 ws=new WebSocket(
 'wss://stream.bybit.com/v5/public/spot'
 );
 
-ws.onopen=()=>ws.send(
-JSON.stringify({
+ws.onopen=()=>{
+
+ws.send(JSON.stringify({
 op:'subscribe',
 args:[`kline.${t}.${s}`]
-})
-);
+}));
+
+};
 
 ws.onmessage=e=>{
 
-let d=JSON.parse(e.data),
-k=d.data?.[0];
+let d=JSON.parse(e.data);
+let k=d.data?.[0];
 
-if(!k)return;
+if(k?.confirm){
 
-putLive({
+put({
 t:+k.start,
 o:+k.open,
 h:+k.high,
 l:+k.low,
 c:+k.close,
-v:+k.volume
+v:+k.volume,
+closed:true
 });
+
+}
+
+};
+
+ws.onclose=()=>{
+
+if(cur?.id==='bybit')
+recon=setTimeout(connect,2500);
 
 };
 
@@ -638,10 +683,20 @@ v:+k.volume
 
 async function okx(){
 
-let s=$('symbol').value,
-t=$('tf').value,
-r=await fetch(
-`https://www.okx.com/api/v5/market/candles?instId=${s}&bar=${t}&limit=300`
+let s=$('symbol').value;
+
+let b={
+'1m':'1m',
+'5m':'5m',
+'15m':'15m',
+'30m':'30m',
+'1h':'1H',
+'2h':'2H',
+'4h':'4H'
+}[$('tf').value]||'1m';
+
+let r=await fetch(
+`https://www.okx.com/api/v5/market/candles?instId=${encodeURIComponent(s)}&bar=${b}&limit=300`
 );
 
 if(!r.ok)
@@ -651,6 +706,7 @@ let j=await r.json();
 
 cs=(j.data||[])
 .reverse()
+.filter(x=>x[8]==='1')
 .map(x=>({
 t:+x[0],
 o:+x[1],
@@ -666,39 +722,49 @@ live();
 $('count').textContent=cs.length;
 
 analyze();
-
 draw();
 
 ws=new WebSocket(
 'wss://ws.okx.com:8443/ws/v5/public'
 );
 
-ws.onopen=()=>ws.send(
-JSON.stringify({
+ws.onopen=()=>{
+
+ws.send(JSON.stringify({
 op:'subscribe',
 args:[{
-channel:'candle'+t,
+channel:'candle'+b,
 instId:s
 }]
-})
-);
+}));
+
+};
 
 ws.onmessage=e=>{
 
 let d=JSON.parse(e.data);
-
 let x=d.data?.[0];
 
-if(!x)return;
+if(x&&x[8]==='1'){
 
-putLive({
+put({
 t:+x[0],
 o:+x[1],
 h:+x[2],
 l:+x[3],
 c:+x[4],
-v:+x[5]
+v:+x[5],
+closed:true
 });
+
+}
+
+};
+
+ws.onclose=()=>{
+
+if(cur?.id==='okx')
+recon=setTimeout(connect,2500);
 
 };
 
@@ -706,31 +772,31 @@ v:+x[5]
 
 async function coinbase(){
 
-let s=$('symbol').value,
-t=$('tf').value;
+let s=$('symbol').value;
 
-let granules={
+let g={
 '1m':60,
 '5m':300,
 '15m':900,
 '30m':1800,
 '1h':3600,
 '2h':7200,
-'4h':14400
-};
+'4h':21600
+}[$('tf').value]||60;
 
-let g=granules[t]||60;
+let end=new Date();
+let start=new Date(end.getTime()-g*300000);
 
 let r=await fetch(
-`https://api.exchange.coinbase.com/products/${s}/candles?granularity=${g}`
+`https://api.exchange.coinbase.com/products/${encodeURIComponent(s)}/candles?granularity=${g}&start=${start.toISOString()}&end=${end.toISOString()}`
 );
 
 if(!r.ok)
 throw Error('Coinbase history HTTP '+r.status);
 
-let j=await r.json();
-
-cs=j.reverse().map(x=>({
+cs=(await r.json())
+.reverse()
+.map(x=>({
 t:+x[0]*1000,
 l:+x[1],
 h:+x[2],
@@ -740,37 +806,65 @@ v:+x[5],
 closed:true
 }));
 
-cs=cs.slice(-500);
-
 live();
 
 $('count').textContent=cs.length;
 
 analyze();
-
 draw();
 
 ws=new WebSocket(
 'wss://advanced-trade-ws.coinbase.com'
 );
 
-ws.onopen=()=>ws.send(
-JSON.stringify({
+ws.onopen=()=>{
+
+ws.send(JSON.stringify({
 type:'subscribe',
 product_ids:[s],
 channel:'candles',
+granularity:g
 }));
+
+};
+
+ws.onmessage=e=>{
+
+let d=JSON.parse(e.data);
+let x=d.events?.[0]?.candles?.[0];
+
+if(x){
+
+put({
+t:+x.start*1000,
+o:+x.open,
+h:+x.high,
+l:+x.low,
+c:+x.close,
+v:+x.volume,
+closed:true
+});
+
+}
+
+};
+
+ws.onclose=()=>{
+
+if(cur?.id==='coinbase')
+recon=setTimeout(connect,2500);
+
+};
+
 }
 
 async function kraken(){
 
-let s=$('symbol').value,
-t=$('tf').value;
-
-let pair=s.replace('/','%2F');
+let s=$('symbol').value;
+let m=mapTF($('tf').value);
 
 let r=await fetch(
-`https://api.kraken.com/0/public/OHLC?pair=${pair}&interval=${mapTF($('tf').value)}`
+`https://api.kraken.com/0/public/OHLC?pair=${encodeURIComponent(s)}&interval=${m}`
 );
 
 if(!r.ok)
@@ -778,9 +872,11 @@ throw Error('Kraken history HTTP '+r.status);
 
 let j=await r.json();
 
-let key=Object.keys(j.result||{}).find(k=>k!=='last');
+let key=Object.keys(j.result||{})
+.find(k=>k!=='last');
 
-cs=(j.result?.[key]||[])
+cs=(key?j.result[key]:[])
+.slice(-500)
 .map(x=>({
 t:+x[0]*1000,
 o:+x[1],
@@ -789,42 +885,41 @@ l:+x[3],
 c:+x[4],
 v:+x[6],
 closed:true
-}))
-.slice(-500);
+}));
 
 live();
 
 $('count').textContent=cs.length;
 
 analyze();
-
 draw();
 
 ws=new WebSocket(
 'wss://ws.kraken.com/v2'
 );
 
-ws.onopen=()=>ws.send(
-JSON.stringify({
+ws.onopen=()=>{
+
+ws.send(JSON.stringify({
 method:'subscribe',
 params:{
 channel:'ohlc',
 symbol:[s],
-interval:mapTF(t)
+interval:m
 }
-})
-);
+}));
+
+};
 
 ws.onmessage=e=>{
 
 let d=JSON.parse(e.data);
-
 let x=d.data?.[0];
 
-if(!x)return;
+if(d.channel==='ohlc'&&x){
 
 putLive({
-t:new Date(x.interval_begin).getTime(),
+t:Date.parse(x.timestamp),
 o:+x.open,
 h:+x.high,
 l:+x.low,
@@ -832,32 +927,51 @@ c:+x.close,
 v:+x.volume
 });
 
+}
+
 };
+
+ws.onclose=()=>{
+
+if(cur?.id==='kraken')
+recon=setTimeout(connect,2500);
+
+};
+
+}
+
+function gateTF(t){
+
+return{
+'1m':'1m',
+'5m':'5m',
+'15m':'15m',
+'30m':'30m',
+'1h':'1h',
+'2h':'4h',
+'4h':'4h'
+}[t]||'1m';
 
 }
 
 function gateSym(s){
 
 return s
-.replace('BTCUSDT','BTC_USDT')
-.replace('ETHUSDT','ETH_USDT')
-.replace('SOLUSDT','SOL_USDT')
-.replace('XRPUSDT','XRP_USDT')
-.replace('DOGEUSDT','DOGE_USDT')
-.replace('BNBUSDT','BNB_USDT')
-.replace('ADAUSDT','ADA_USDT')
-.replace('AVAXUSDT','AVAX_USDT')
-.replace('LINKUSDT','LINK_USDT');
+.replace('-','_')
+.replace('/','_')
+.replace('USDT','_USDT')
+.replace('__','_');
 
 }
 
 async function gateio(){
 
-let s=gateSym($('symbol').value),
-t=$('tf').value;
+let raw=$('symbol').value;
+let s=gateSym(raw);
+let tf=gateTF($('tf').value);
 
 let r=await fetch(
-`https://api.gateio.ws/api/v4/spot/candlesticks?currency_pair=${s}&interval=${t}&limit=500`
+`https://api.gateio.ws/api/v4/spot/candlesticks?currency_pair=${encodeURIComponent(s)}&interval=${tf}&limit=500`
 );
 
 if(!r.ok)
@@ -865,7 +979,9 @@ throw Error('Gate.io history HTTP '+r.status);
 
 let j=await r.json();
 
-cs=j.map(x=>({
+cs=j.slice()
+.reverse()
+.map(x=>({
 t:+x[0]*1000,
 v:+x[1],
 c:+x[2],
@@ -873,37 +989,36 @@ h:+x[3],
 l:+x[4],
 o:+x[5],
 closed:true
-}))
-.reverse();
+}));
 
 live();
 
 $('count').textContent=cs.length;
 
 analyze();
-
 draw();
 
 ws=new WebSocket(
 'wss://api.gateio.ws/ws/v4/'
 );
 
-ws.onopen=()=>ws.send(
-JSON.stringify({
+ws.onopen=()=>{
+
+ws.send(JSON.stringify({
 time:Math.floor(Date.now()/1000),
 channel:'spot.candlesticks',
 event:'subscribe',
-payload:[t,s]
-})
-);
+payload:[tf,s]
+}));
+
+};
 
 ws.onmessage=e=>{
 
 let d=JSON.parse(e.data);
+let x=d.result;
 
-let x=d.result?.[0];
-
-if(!x)return;
+if(d.channel==='spot.candlesticks'&&x){
 
 putLive({
 t:+x.t*1000,
@@ -914,17 +1029,40 @@ c:+x.c,
 v:+x.v
 });
 
+}
+
 };
+
+ws.onclose=()=>{
+
+if(cur?.id==='gateio')
+recon=setTimeout(connect,2500);
+
+};
+
+}
+
+function bitgetTF(t){
+
+return{
+'1m':'1m',
+'5m':'5m',
+'15m':'15m',
+'30m':'30m',
+'1h':'1H',
+'2h':'4H',
+'4h':'4H'
+}[t]||'1m';
 
 }
 
 async function bitget(){
 
-let s=$('symbol').value,
-tf=$('tf').value;
+let s=$('symbol').value;
+let tf=bitgetTF($('tf').value);
 
 let r=await fetch(
-`https://api.bitget.com/api/v2/spot/market/candles?symbol=${s}&granularity=${tf}&limit=500`
+`https://api.bitget.com/api/v3/market/candles?category=SPOT&symbol=${encodeURIComponent(s)}&interval=${tf}&limit=500`
 );
 
 if(!r.ok)
@@ -933,6 +1071,7 @@ throw Error('Bitget history HTTP '+r.status);
 let j=await r.json();
 
 cs=(j.data||[])
+.slice()
 .reverse()
 .map(x=>({
 t:+x[0],
@@ -949,31 +1088,31 @@ live();
 $('count').textContent=cs.length;
 
 analyze();
-
 draw();
 
 ws=new WebSocket(
 'wss://ws.bitget.com/v2/ws/public'
 );
 
-ws.onopen=()=>ws.send(
-JSON.stringify({
+ws.onopen=()=>{
+
+ws.send(JSON.stringify({
 op:'subscribe',
 args:[{
 instType:'SPOT',
 channel:'candle'+tf,
 instId:s
 }]
-})
-);
+}));
+
+};
 
 ws.onmessage=e=>{
 
 let d=JSON.parse(e.data);
-
 let x=d.data?.[0];
 
-if(!x)return;
+if(x){
 
 putLive({
 t:+x[0],
@@ -984,27 +1123,49 @@ c:+x[4],
 v:+x[5]
 });
 
+}
+
+};
+
+ws.onclose=()=>{
+
+if(cur?.id==='bitget')
+recon=setTimeout(connect,2500);
+
 };
 
 }
 
-async function mexc(){
+function mexcTF(t){
 
-let s=$('symbol').value,
-tf=$('tf').value;
-
-let map={
+return{
 '1m':'Min1',
 '5m':'Min5',
 '15m':'Min15',
 '30m':'Min30',
 '1h':'Min60',
-'2h':'Hour2',
+'2h':'Hour4',
 '4h':'Hour4'
-};
+}[t]||'Min1';
+
+}
+
+async function mexc(){
+
+let s=$('symbol').value;
+let tf=mexcTF($('tf').value);
+
+let apiTf={
+'Min1':'1m',
+'Min5':'5m',
+'Min15':'15m',
+'Min30':'30m',
+'Min60':'60m',
+'Hour4':'4h'
+}[tf]||'1m';
 
 let r=await fetch(
-`https://api.mexc.com/api/v3/klines?symbol=${s}&interval=${tf}&limit=500`
+`https://api.mexc.com/api/v3/klines?symbol=${encodeURIComponent(s)}&interval=${apiTf}&limit=500`
 );
 
 if(!r.ok)
@@ -1012,7 +1173,9 @@ throw Error('MEXC history HTTP '+r.status);
 
 let j=await r.json();
 
-cs=j.map(x=>({
+cs=j.slice()
+.reverse()
+.map(x=>({
 t:+x[0],
 o:+x[1],
 h:+x[2],
@@ -1027,38 +1190,51 @@ live();
 $('count').textContent=cs.length;
 
 analyze();
-
 draw();
 
 ws=new WebSocket(
 'wss://wbs-api.mexc.com/ws'
 );
 
-ws.onopen=()=>ws.send(
-JSON.stringify({
+ws.onopen=()=>{
+
+ws.send(JSON.stringify({
 method:'SUBSCRIPTION',
 params:[
-`spot@public.kline.v3.api.pb@${s}@${map[tf]}`
+`spot@public.kline.v3.api.pb@${s}@${tf}`
 ]
-})
-);
+}));
+
+};
 
 ws.onmessage=e=>{
 
-let d=JSON.parse(e.data);
+try{
 
+let d=JSON.parse(e.data);
 let k=d.publicspotkline;
 
-if(!k)return;
+if(k){
 
 putLive({
-t:+k.t,
-o:+k.o,
-h:+k.h,
-l:+k.l,
-c:+k.c,
-v:+k.v
+t:+k.windowstart*1000,
+o:+k.openingprice,
+h:+k.highestprice,
+l:+k.lowestprice,
+c:+k.closingprice,
+v:+k.volume
 });
+
+}
+
+}catch(e){}
+
+};
+
+ws.onclose=()=>{
+
+if(cur?.id==='mexc')
+recon=setTimeout(connect,2500);
 
 };
 
@@ -1068,9 +1244,11 @@ function ema(a,n){
 
 if(a.length<n)return null;
 
-let e=a.slice(0,n).reduce((x,y)=>x+y,0)/n;
-
 let k=2/(n+1);
+
+let e=a
+.slice(0,n)
+.reduce((x,y)=>x+y,0)/n;
 
 for(let i=n;i<a.length;i++)
 e=a[i]*k+e*(1-k);
@@ -1079,50 +1257,38 @@ return e;
 
 }
 
-function emaSeries(a,n){
-
-if(a.length<n)return [];
-
-let out=[];
-
-let e=a.slice(0,n).reduce((x,y)=>x+y,0)/n;
-
-out[n-1]=e;
-
-let k=2/(n+1);
-
-for(let i=n;i<a.length;i++){
-
-e=a[i]*k+e*(1-k);
-
-out[i]=e;
-
-}
-
-return out;
-
-}
-
 function rsi(a,n=14){
 
-if(a.length<n+1)return null;
+if(a.length<=n)return null;
 
 let g=0,l=0;
 
-for(let i=a.length-n;i<a.length;i++){
+for(let i=1;i<=n;i++){
 
 let d=a[i]-a[i-1];
 
-if(d>=0)g+=d;
-else l-=d;
+g+=Math.max(d,0);
+l+=Math.max(-d,0);
 
 }
 
-if(l===0)return 100;
+g/=n;
+l/=n;
 
-let rs=(g/n)/(l/n);
+let v=100-100/(1+(l?g/l:100));
 
-return 100-(100/(1+rs));
+for(let i=n+1;i<a.length;i++){
+
+let d=a[i]-a[i-1];
+
+g=(g*(n-1)+Math.max(d,0))/n;
+l=(l*(n-1)+Math.max(-d,0))/n;
+
+v=100-100/(1+(l?g/l:100));
+
+}
+
+return v;
 
 }
 
@@ -1130,11 +1296,11 @@ function atr(a,n=14){
 
 if(a.length<n+1)return null;
 
-let tr=[];
+let t=[];
 
 for(let i=1;i<a.length;i++){
 
-tr.push(
+t.push(
 Math.max(
 a[i].h-a[i].l,
 Math.abs(a[i].h-a[i-1].c),
@@ -1144,7 +1310,34 @@ Math.abs(a[i].l-a[i-1].c)
 
 }
 
-return tr.slice(-n).reduce((x,y)=>x+y,0)/n;
+return t
+.slice(-n)
+.reduce((x,y)=>x+y,0)/n;
+
+}
+
+function emaSeries(a,n){
+
+let out=new Array(a.length).fill(null);
+
+if(a.length<n)return out;
+
+let k=2/(n+1);
+
+let e=a
+.slice(0,n)
+.reduce((x,y)=>x+y,0)/n;
+
+out[n-1]=e;
+
+for(let i=n;i<a.length;i++){
+
+e=a[i]*k+e*(1-k);
+out[i]=e;
+
+}
+
+return out;
 
 }
 
@@ -1152,9 +1345,7 @@ function adxCalc(a,n=14){
 
 if(a.length<2*n+1)return null;
 
-let tr=[],
-pdm=[],
-mdm=[];
+let tr=[],pdm=[],mdm=[];
 
 for(let i=1;i<a.length;i++){
 
@@ -1169,16 +1360,29 @@ Math.abs(a[i].l-a[i-1].c)
 )
 );
 
-pdm.push(up>down&&up>0?up:0);
+pdm.push(
+up>down&&up>0?up:0
+);
 
-mdm.push(down>up&&down>0?down:0);
+mdm.push(
+down>up&&down>0?down:0
+);
 
 }
 
-let atrv=tr.slice(0,n).reduce((x,y)=>x+y,0),
-plus=pdm.slice(0,n).reduce((x,y)=>x+y,0),
-minus=mdm.slice(0,n).reduce((x,y)=>x+y,0),
-dx=[];
+let atrv=tr
+.slice(0,n)
+.reduce((x,y)=>x+y,0);
+
+let plus=pdm
+.slice(0,n)
+.reduce((x,y)=>x+y,0);
+
+let minus=mdm
+.slice(0,n)
+.reduce((x,y)=>x+y,0);
+
+let dx=[];
 
 for(let i=n;i<tr.length;i++){
 
@@ -1205,19 +1409,20 @@ function macdCalc(a){
 
 if(a.length<35)return null;
 
-let f=emaSeries(a,12),
-s=emaSeries(a,26),
-line=[];
+let f=emaSeries(a,12);
+let s=emaSeries(a,26);
+
+let line=[];
 
 for(let i=25;i<a.length;i++)
 line.push(f[i]-s[i]);
 
 if(line.length<9)return null;
 
-let sig=ema(line,9),
-ln=line.at(-1);
+let sig=ema(line,9);
+let ln=line.at(-1);
 
-return {
+return{
 line:ln,
 signal:sig,
 hist:ln-sig
@@ -1227,14 +1432,15 @@ hist:ln-sig
 
 function vwapCalc(a,n=50){
 
-let z=a.slice(-n),
-pv=0,
-v=0;
+let z=a.slice(-n);
+
+let pv=0;
+let v=0;
 
 for(const q of z){
 
-let vol=Number(q.v)||0,
-p=(q.h+q.l+q.c)/3;
+let vol=Number(q.v)||0;
+let p=(q.h+q.l+q.c)/3;
 
 pv+=p*vol;
 v+=vol;
@@ -1251,8 +1457,8 @@ if(a.length<n+1)return null;
 
 let cur=Number(a.at(-1).v)||0;
 
-let base=
-a.slice(-n-1,-1)
+let base=a
+.slice(-n-1,-1)
 .reduce((x,y)=>x+(Number(y.v)||0),0)/n;
 
 return base?cur/base:null;
@@ -1271,10 +1477,10 @@ let sd=Math.sqrt(
 z.reduce((x,y)=>x+(y-mid)**2,0)/n
 );
 
-let up=mid+m*sd,
-lo=mid-m*sd;
+let up=mid+m*sd;
+let lo=mid-m*sd;
 
-return {
+return{
 position:(a.at(-1)-lo)/(up-lo||1),
 upper:up,
 lower:lo
@@ -1291,7 +1497,9 @@ let z=a.slice(-n);
 let hi=Math.max(...z.map(x=>x.h));
 let lo=Math.min(...z.map(x=>x.l));
 
-return 100*(a.at(-1).c-lo)/(hi-lo||1);
+return 100*
+(a.at(-1).c-lo)/
+(hi-lo||1);
 
 }
 
@@ -1305,14 +1513,13 @@ av<=0
 ){
 
 resetLevels();
-
 return;
+
 }
 
-let risk=1.5*av,
-sl,
-tp1,
-tp2;
+let risk=1.5*av;
+
+let sl,tp1,tp2;
 
 if(side==='BUY'){
 
@@ -1353,51 +1560,120 @@ draw();
 
 function analyze(){
 
-if(cs.length<210)return;
+if(cs.length<60)return;
 
-let cl=cs.map(x=>x.c),
-e50=ema(cl,50),
-e200=ema(cl,200),
-rv=rsi(cl),
-av=atr(cs),
-a=cs.at(-1),
-p=cs.at(-2),
-p3=cs.at(-3);
+let cl=cs
+.map(x=>Number(x.c))
+.filter(Number.isFinite);
 
-if(![e50,e200,rv,av].every(Number.isFinite))
-return;
+if(cl.length<60)return;
 
-let adx=adxCalc(cs),
-mac=macdCalc(cl),
-vw=vwapCalc(cs),
-vr=volumeRatio(cs),
-bb=bbCalc(cl),
-st=stochCalc(cl);
+let e50=ema(cl,50);
 
-if(![adx,mac?.hist,vw,vr,bb?.position,st].every(Number.isFinite))
-return;
+let e200=ema(
+cl,
+Math.min(200,cl.length)
+);
 
-let bull=e50>e200,
-bear=e50<e200;
+let rv=rsi(cl);
+let av=atr(cs);
 
-let mb=a.c>p.c&&p.c>p3.c,
-ms=a.c<p.c&&p.c<p3.c;
+let a=cs.at(-1);
+let p=cs.at(-2);
+let p3=cs.at(-3);
 
-let rr=cs.slice(-12,-2),
-hi=Math.max(...rr.map(x=>x.h)),
-lo=Math.min(...rr.map(x=>x.l));
+if(
+!a||
+!p||
+!p3||
+![e50,e200,rv,av].every(Number.isFinite)
+)return;
 
-let lb=a.l<lo&&a.c>lo,
-ls=a.h>hi&&a.c<hi;
+let adx=adxCalc(cs);
+let mac=macdCalc(cl);
+let vw=vwapCalc(cs);
+let vr=volumeRatio(cs);
+let bb=bbCalc(cl);
+let st=stochCalc(cs);
+
+/*
+IMPORTANT:
+One optional indicator must NEVER stop the whole AI engine.
+*/
+
+adx=Number.isFinite(adx)?adx:20;
+
+mac=
+mac&&Number.isFinite(mac.hist)
+?mac
+:{line:0,signal:0,hist:0};
+
+vw=
+Number.isFinite(vw)
+?vw
+:a.c;
+
+vr=
+Number.isFinite(vr)
+?vr
+:1;
+
+bb=
+bb&&Number.isFinite(bb.position)
+?bb
+:{
+position:a.c>=e50?0.6:0.4,
+upper:a.c,
+lower:a.c
+};
+
+st=
+Number.isFinite(st)
+?st
+:rv;
+
+let bull=e50>e200;
+let bear=e50<e200;
+
+let mb=
+a.c>p.c&&p.c>p3.c;
+
+let ms=
+a.c<p.c&&p.c<p3.c;
+
+let rr=cs.slice(-12,-2);
+
+let hi=Math.max(
+...rr.map(x=>x.h)
+);
+
+let lo=Math.min(
+...rr.map(x=>x.l)
+);
+
+let lb=
+a.l<lo&&a.c>lo;
+
+let ls=
+a.h>hi&&a.c<hi;
 
 let bosb=
-a.c>Math.max(...cs.slice(-8,-1).map(x=>x.h));
+a.c>
+Math.max(
+...cs.slice(-8,-1).map(x=>x.h)
+);
 
 let boss=
-a.c<Math.min(...cs.slice(-8,-1).map(x=>x.l));
+a.c<
+Math.min(
+...cs.slice(-8,-1).map(x=>x.l)
+);
 
-let fb=p3.h<a.l,
-fs=p3.l>a.h;
+let fb=
+p3.h<a.l;
+
+let fs=
+p3.l>a.h;
 
 /* 11 confirmation engine */
 
@@ -1433,22 +1709,30 @@ let w=[
 18,9,9,9,9,8,10,10,6,6,6
 ];
 
-let bc=buy.filter(Boolean).length,
-sc=sell.filter(Boolean).length;
+let bc=
+buy.filter(Boolean).length;
 
-let bs=buy.reduce(
+let sc=
+sell.filter(Boolean).length;
+
+let bs=
+buy.reduce(
 (sum,v,i)=>sum+(v?w[i]:0),0
 );
 
-let ss=sell.reduce(
+let ss=
+sell.reduce(
 (sum,v,i)=>sum+(v?w[i]:0),0
 );
 
 /*
-V27.9 CLOSED-CANDLE REVERSAL ENGINE
+CLOSED-CANDLE REVERSAL ENGINE
 
-1m / 5m sudden reversal.
-Only CLOSED candles are used.
+If main trend is bullish but a strong closed
+bearish candle appears, scan for SELL 1–5m.
+
+If main trend is bearish but a strong closed
+bullish candle appears, scan for BUY 1–5m.
 */
 
 let ranges=
@@ -1462,7 +1746,9 @@ ranges.length
 
 let nowRange=a.h-a.l;
 
-let body=Math.abs(a.c-a.o);
+let body=Math.abs(
+a.c-a.o
+);
 
 let bodyRatio=
 nowRange
@@ -1476,16 +1762,14 @@ let bullishBody=
 a.c>a.o&&bodyRatio>=0.45;
 
 let suddenBear=
-bearishBody&&
-(
+bearishBody&&(
 nowRange>=avgRange*1.05||
 body>=av*0.45||
 a.c<=p.c-av*0.35
 );
 
 let suddenBull=
-bullishBody&&
-(
+bullishBody&&(
 nowRange>=avgRange*1.05||
 body>=av*0.45||
 a.c>=p.c+av*0.35
@@ -1523,14 +1807,19 @@ let revW=[
 11,10,10,9,10,10,9,7,7,4,4
 ];
 
-let rsc=reversalSell.filter(Boolean).length,
-rbc=reversalBuy.filter(Boolean).length;
+let rsc=
+reversalSell.filter(Boolean).length;
 
-let rss=reversalSell.reduce(
+let rbc=
+reversalBuy.filter(Boolean).length;
+
+let rss=
+reversalSell.reduce(
 (sum,v,i)=>sum+(v?revW[i]:0),0
 );
 
-let rbs=reversalBuy.reduce(
+let rbs=
+reversalBuy.reduce(
 (sum,v,i)=>sum+(v?revW[i]:0),0
 );
 
@@ -1550,17 +1839,22 @@ bear&&
 rbc>=8&&
 rbs>=75;
 
-let side='NO TRADE',
-selected='BUY',
-count=bc,
-conf=bs,
-isReversal=false;
+let side='NO TRADE';
 
-/*
-Priority:
-strong reversal first,
-then normal trend setup.
-*/
+let selected=
+bs>=ss?'BUY':'SELL';
+
+let count=
+selected==='BUY'
+?bc
+:sc;
+
+let conf=
+selected==='BUY'
+?bs
+:ss;
+
+let isReversal=false;
 
 if(
 strongRevSell&&
@@ -1590,7 +1884,10 @@ selected='BUY';
 count=bc;
 conf=bs;
 
-if(bc>=8&&bs>=75)
+if(
+bc>=8&&
+bs>=75
+)
 side='BUY';
 
 }else if(bear){
@@ -1599,22 +1896,11 @@ selected='SELL';
 count=sc;
 conf=ss;
 
-if(sc>=8&&ss>=75)
+if(
+sc>=8&&
+ss>=75
+)
 side='SELL';
-
-}else{
-
-selected=bs>=ss?'BUY':'SELL';
-
-count=
-selected==='BUY'
-?bc
-:sc;
-
-conf=
-selected==='BUY'
-?bs
-:ss;
 
 }
 
@@ -1636,7 +1922,8 @@ Math.round(conf)+'%';
 $('confirm').textContent=
 count+'/11';
 
-$('price').textContent=fmt(a.c);
+$('price').textContent=
+fmt(a.c);
 
 $('rsi').textContent=
 rv.toFixed(2);
@@ -1651,9 +1938,11 @@ $('e200').textContent=
 fmt(e200);
 
 $('trend').textContent=
-bull?'BULLISH':
-bear?'BEARISH':
-'NEUTRAL';
+bull
+?'BULLISH'
+:bear
+?'BEARISH'
+:'NEUTRAL';
 
 $('window').textContent=
 shortTF
@@ -1665,40 +1954,29 @@ side==='BUY'
 ?(isReversal
 ?'BUY REVERSAL 1–5M'
 :'BUY ALLOWED')
-:
-side==='SELL'
+:side==='SELL'
 ?(isReversal
 ?'SELL REVERSAL 1–5M'
 :'SELL ALLOWED')
-:
-(
-strongRevSell
-?'SELL REVERSAL READY'
-:
-strongRevBuy
-?'BUY REVERSAL READY'
-:
-bull
+:(bull
 ?'BUY WATCH'
-:
-bear
+:bear
 ?'SELL WATCH'
-:
-'WAIT'
-);
+:'WAIT');
 
 $('filter').style.color=
 side==='BUY'
 ?'var(--g)'
-:
-side==='SELL'
+:side==='SELL'
 ?'var(--r)'
 :'var(--y)';
 
 $('mom').textContent=
-mb?'BULLISH':
-ms?'BEARISH':
-'MIXED';
+mb
+?'BULLISH'
+:ms
+?'BEARISH'
+:'MIXED';
 
 $('adx').textContent=
 adx.toFixed(2);
@@ -1718,13 +1996,15 @@ $('bbpos').textContent=
 $('stoch').textContent=
 st.toFixed(2);
 
-/*
-IMPORTANT:
-NO TRADE clears all old levels.
-*/
-
-if(side==='BUY'||side==='SELL')
-setTradeLevels(side,a.c,av);
+if(
+side==='BUY'||
+side==='SELL'
+)
+setTradeLevels(
+side,
+a.c,
+av
+);
 else
 resetLevels();
 
@@ -1746,10 +2026,14 @@ for(let i=0;i<11;i++){
 
 $("c"+(i+1)).innerHTML=
 `${i+1}. ${labels[i]}:
-<span class="${buy[i]?'check-buy':'check-off'}">
+<span class="${
+buy[i]?'check-buy':'check-off'
+}">
 BUY ${buy[i]?'✓':'✕'}
 </span>
-<span class="${sell[i]?'check-sell':'check-off'}">
+<span class="${
+sell[i]?'check-sell':'check-off'
+}">
 SELL ${sell[i]?'✓':'✕'}
 </span>`;
 
@@ -1764,17 +2048,12 @@ selected==='BUY'
 
 if(side==='NO TRADE'){
 
-if(isReversal){
-
 $('reason').textContent=
-`${candidate} reversal candidate • ${count}/11 confirmations • ${Math.round(conf)}% • ${shortTF?'1–5 min':'short-term'} • Need 8/11 + 75%`;
-
-}else{
-
-$('reason').textContent=
-`${candidate} candidate • ${count}/11 confirmations • ${Math.round(conf)}% • Main trend: ${bull?'BULLISH':bear?'BEARISH':'NEUTRAL'} • Reversal scan active • Need 8/11 + 75%`;
-
-}
+`${candidate} candidate • ${count}/11 confirmations • ${Math.round(conf)}% • Main trend: ${
+bull?'BULLISH':
+bear?'BEARISH':
+'NEUTRAL'
+} • Reversal scan active • Need 8/11 + 75%`;
 
 }else if(isReversal){
 
@@ -1803,23 +2082,30 @@ undefined,
 
 function draw(){
 
-let c=$('chart'),
-x=c.getContext('2d'),
-W=c.width,
-H=c.height;
+let c=$('chart');
+let x=c.getContext('2d');
+
+let W=c.width;
+let H=c.height;
 
 x.clearRect(0,0,W,H);
 
 x.fillStyle='#08131d';
-
 x.fillRect(0,0,W,H);
 
 if(!cs.length)return;
 
-let a=cs.slice(-100),
-mn=Math.min(...a.map(z=>z.l)),
-mx=Math.max(...a.map(z=>z.h)),
-pad=35;
+let a=cs.slice(-100);
+
+let mn=Math.min(
+...a.map(z=>z.l)
+);
+
+let mx=Math.max(
+...a.map(z=>z.h)
+);
+
+let pad=35;
 
 if(tradeLevels){
 
@@ -1843,17 +2129,23 @@ tradeLevels.entry
 
 let py=v=>
 H-pad-
-(v-mn)/(mx-mn||1)*(H-pad*2);
+(v-mn)/(mx-mn||1)*
+(H-pad*2);
 
-let st=W/a.length,
-bw=Math.max(3,st*.62);
+let st=W/a.length;
+
+let bw=Math.max(
+3,
+st*.62
+);
 
 x.strokeStyle='#1b2b38';
 
 for(let i=0;i<6;i++){
 
 let y=
-pad+i*(H-pad*2)/5;
+pad+
+i*(H-pad*2)/5;
 
 x.beginPath();
 x.moveTo(0,y);
@@ -1864,9 +2156,12 @@ x.stroke();
 
 a.forEach((z,i)=>{
 
-let xx=i*st+st/2,
-yo=py(z.o),
-yc=py(z.c);
+let xx=
+i*st+
+st/2;
+
+let yo=py(z.o);
+let yc=py(z.c);
 
 x.strokeStyle=
 z.c>=z.o
@@ -1876,8 +2171,17 @@ z.c>=z.o
 x.fillStyle=x.strokeStyle;
 
 x.beginPath();
-x.moveTo(xx,py(z.h));
-x.lineTo(xx,py(z.l));
+
+x.moveTo(
+xx,
+py(z.h)
+);
+
+x.lineTo(
+xx,
+py(z.l)
+);
+
 x.stroke();
 
 x.fillRect(
@@ -1892,26 +2196,31 @@ Math.max(1,Math.abs(yc-yo))
 if(tradeLevels){
 
 const levels=[
+
 {
 name:'ENTRY',
 value:tradeLevels.entry,
 color:'#62a8ff'
 },
+
 {
 name:'SL',
 value:tradeLevels.sl,
 color:'#ff5f6d'
 },
+
 {
 name:'TP1',
 value:tradeLevels.tp1,
 color:'#43e58b'
 },
+
 {
 name:'TP2',
 value:tradeLevels.tp2,
 color:'#43e58b'
 }
+
 ];
 
 x.save();
@@ -1955,12 +2264,17 @@ x.restore();
 let q=a.at(-1);
 
 $('info').textContent=
-`${cur?.name||''} • ${$('symbol').value} • ${$('tf').value} • ${new Date(q.t).toLocaleString()} • ${fmt(q.c)}${tradeLevels?' • '+tradeLevels.side+' levels active':''}`;
+`${cur?.name||''} • ${$('symbol').value} • ${$('tf').value} • ${new Date(q.t).toLocaleString()} • ${fmt(q.c)}${
+tradeLevels
+?' • '+tradeLevels.side+' levels active'
+:''
+}`;
 
 }
 
 init();
 
 </script>
+
 </body>
 </html>
