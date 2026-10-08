@@ -1,12 +1,18 @@
 from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
+
 BASE = Path(__file__).resolve().parent
 INDEX = BASE / "index.html"
 
-app = FastAPI(title="AI Live Signal Bot V32 - Live 16 Sources")
+
+app = FastAPI(
+    title="AI Live Signal Bot V33 - Verified Live Sources"
+)
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -16,23 +22,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 SOURCES = [
-    {"id":"binance","name":"Binance","category":"Crypto","status":"LIVE"},
-    {"id":"bybit","name":"Bybit","category":"Crypto","status":"LIVE"},
-    {"id":"okx","name":"OKX","category":"Crypto","status":"LIVE"},
-    {"id":"coinbase","name":"Coinbase Exchange","category":"Crypto","status":"LIVE"},
-    {"id":"kraken","name":"Kraken","category":"Crypto","status":"LIVE"},
-    {"id":"bitget","name":"Bitget","category":"Crypto","status":"LIVE"},
-    {"id":"gateio","name":"Gate.io","category":"Crypto","status":"LIVE"},
-    {"id":"mexc","name":"MEXC","category":"Crypto","status":"LIVE"},
-    {"id":"kucoin","name":"KuCoin","category":"Crypto","status":"LIVE"},
-    {"id":"bitfinex","name":"Bitfinex","category":"Crypto","status":"LIVE"},
-    {"id":"cryptocom","name":"Crypto.com Exchange","category":"Crypto","status":"LIVE"},
-    {"id":"hyperliquid","name":"Hyperliquid","category":"Crypto","status":"LIVE"},
-    {"id":"htx","name":"HTX / Huobi","category":"Crypto","status":"LIVE"},
-    {"id":"upbit","name":"Upbit","category":"Crypto","status":"LIVE"},
-    {"id":"poloniex","name":"Poloniex","category":"Crypto","status":"LIVE"},
-    {"id":"coinex","name":"CoinEx","category":"Crypto","status":"LIVE"},
+    {"id":"binance","name":"Binance","category":"Crypto","status":"CHECKING"},
+    {"id":"bybit","name":"Bybit","category":"Crypto","status":"CHECKING"},
+    {"id":"okx","name":"OKX","category":"Crypto","status":"CHECKING"},
+    {"id":"coinbase","name":"Coinbase Exchange","category":"Crypto","status":"CHECKING"},
+    {"id":"kraken","name":"Kraken","category":"Crypto","status":"CHECKING"},
+    {"id":"bitget","name":"Bitget","category":"Crypto","status":"CHECKING"},
+    {"id":"gateio","name":"Gate.io","category":"Crypto","status":"CHECKING"},
+    {"id":"mexc","name":"MEXC","category":"Crypto","status":"CHECKING"},
+    {"id":"kucoin","name":"KuCoin","category":"Crypto","status":"CHECKING"},
+    {"id":"bitfinex","name":"Bitfinex","category":"Crypto","status":"CHECKING"},
+    {"id":"cryptocom","name":"Crypto.com Exchange","category":"Crypto","status":"CHECKING"},
+    {"id":"hyperliquid","name":"Hyperliquid","category":"Crypto","status":"CHECKING"},
+    {"id":"htx","name":"HTX / Huobi","category":"Crypto","status":"CHECKING"},
+    {"id":"upbit","name":"Upbit","category":"Crypto","status":"CHECKING"},
+    {"id":"poloniex","name":"Poloniex","category":"Crypto","status":"CHECKING"},
+    {"id":"coinex","name":"CoinEx","category":"Crypto","status":"CHECKING"},
 
     {"id":"deribit","name":"Deribit","category":"Crypto","status":"LISTED"},
     {"id":"gemini","name":"Gemini","category":"Crypto","status":"LISTED"},
@@ -53,75 +60,113 @@ SOURCES = [
     {"id":"twelvedata","name":"Twelve Data","category":"Forex / Metals","status":"API KEY REQUIRED"},
 ]
 
+
 CRYPTO_SYMBOLS = {
+
     "binance":[
-        "BTCUSDT","ETHUSDT","BNBUSDT","SOLUSDT","XRPUSDT",
-        "ADAUSDT","DOGEUSDT","AVAXUSDT","LINKUSDT","LTCUSDT"
+        "BTCUSDT","ETHUSDT","BNBUSDT","SOLUSDT",
+        "XRPUSDT","ADAUSDT","DOGEUSDT","AVAXUSDT",
+        "LINKUSDT","LTCUSDT"
     ],
+
     "bybit":[
-        "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT",
-        "BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"
+        "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT",
+        "DOGEUSDT","BNBUSDT","ADAUSDT","AVAXUSDT",
+        "LINKUSDT"
     ],
+
     "okx":[
         "BTC-USDT","ETH-USDT","SOL-USDT","XRP-USDT",
-        "DOGE-USDT","BNB-USDT","ADA-USDT","AVAX-USDT","LINK-USDT"
+        "DOGE-USDT","BNB-USDT","ADA-USDT",
+        "AVAX-USDT","LINK-USDT"
     ],
+
     "coinbase":[
         "BTC-USD","ETH-USD","SOL-USD","XRP-USD",
         "DOGE-USD","ADA-USD","AVAX-USD","LINK-USD"
     ],
+
     "kraken":[
         "BTC/USD","ETH/USD","SOL/USD","XRP/USD",
         "DOGE/USD","ADA/USD","AVAX/USD","LINK/USD"
     ],
+
     "bitget":[
-        "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT",
-        "BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"
+        "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT",
+        "DOGEUSDT","BNBUSDT","ADAUSDT","AVAXUSDT",
+        "LINKUSDT"
     ],
+
     "gateio":[
-        "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT",
-        "BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"
+        "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT",
+        "DOGEUSDT","BNBUSDT","ADAUSDT","AVAXUSDT",
+        "LINKUSDT"
     ],
+
     "mexc":[
-        "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT",
-        "BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"
+        "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT",
+        "DOGEUSDT","BNBUSDT","ADAUSDT","AVAXUSDT",
+        "LINKUSDT"
     ],
+
     "kucoin":[
         "BTC-USDT","ETH-USDT","SOL-USDT","XRP-USDT",
-        "DOGE-USDT","BNB-USDT","ADA-USDT","AVAX-USDT","LINK-USDT"
+        "DOGE-USDT","BNB-USDT","ADA-USDT","AVAX-USDT"
     ],
+
     "bitfinex":[
-        "BTCUSD","ETHUSD","SOLUSD","XRPUSD","DOGEUSD","LTCUSD"
+        "BTCUSD","ETHUSD","SOLUSD",
+        "XRPUSD","DOGEUSD","LTCUSD"
     ],
+
     "cryptocom":[
-        "BTC_USDT","ETH_USDT","SOL_USDT","XRP_USDT",
-        "DOGE_USDT","BNB_USDT","ADA_USDT"
+        "BTC_USDT","ETH_USDT","SOL_USDT",
+        "XRP_USDT","DOGE_USDT","BNB_USDT",
+        "ADA_USDT"
     ],
+
     "hyperliquid":[
-        "BTC","ETH","SOL","XRP","DOGE","AVAX","LINK"
+        "BTC","ETH","SOL","XRP",
+        "DOGE","AVAX","LINK"
     ],
+
     "htx":[
-        "btcusdt","ethusdt","solusdt","xrpusdt",
-        "dogeusdt","bnbusdt","adausdt"
+        "btcusdt","ethusdt","solusdt",
+        "xrpusdt","dogeusdt","bnbusdt",
+        "adausdt"
     ],
+
     "upbit":[
         "USDT-BTC","USDT-ETH","USDT-SOL",
         "USDT-XRP","USDT-DOGE","USDT-ADA"
     ],
+
     "poloniex":[
         "BTC_USDT","ETH_USDT","SOL_USDT",
         "XRP_USDT","DOGE_USDT","BNB_USDT"
     ],
+
     "coinex":[
-        "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT",
-        "DOGEUSDT","BNBUSDT","ADAUSDT"
-    ],
+        "BTCUSDT","ETHUSDT","SOLUSDT",
+        "XRPUSDT","DOGEUSDT","BNBUSDT",
+        "ADAUSDT"
+    ]
 }
 
+
 FOREX_SYMBOLS = [
-    "EURUSD","GBPUSD","USDJPY","AUDUSD","USDCAD",
-    "USDCHF","NZDUSD","EURGBP","EURJPY","GBPJPY"
+    "EURUSD",
+    "GBPUSD",
+    "USDJPY",
+    "AUDUSD",
+    "USDCAD",
+    "USDCHF",
+    "NZDUSD",
+    "EURGBP",
+    "EURJPY",
+    "GBPJPY"
 ]
+
 
 METAL_SYMBOLS = [
     "XAUUSD",
@@ -136,16 +181,18 @@ async def home():
 
 @app.get("/api/health")
 async def health():
+
     return {
         "ok": True,
-        "app": "AI Live Signal Bot V32",
+        "app": "AI Live Signal Bot V33",
         "auto_trade": True,
         "auto_trade_demo": True,
         "real_mode_available": True,
         "real_orders": False,
+
         "real_orders_reason":
-            "REAL execution requires secure exchange API credentials; "
-            "none are configured by default.",
+        "REAL execution requires secure exchange API credentials; none are configured by default.",
+
         "live_adapters": [
             "binance",
             "bybit",
@@ -162,8 +209,8 @@ async def health():
             "htx",
             "upbit",
             "poloniex",
-            "coinex",
-        ],
+            "coinex"
+        ]
     }
 
 
@@ -176,20 +223,21 @@ async def sources():
 
 @app.get("/api/trading-config")
 async def trading_config():
+
     return {
         "demo_auto": True,
         "real_mode_available": True,
         "real_orders_enabled": False,
         "reason":
-            "Real orders require secure exchange API credentials "
-            "configured on the server.",
+        "Real orders require secure exchange API credentials configured on the server."
     }
 
 
 @app.get("/api/instruments")
 async def instruments():
+
     return {
         "crypto": CRYPTO_SYMBOLS,
         "forex": FOREX_SYMBOLS,
-        "metals": METAL_SYMBOLS,
+        "metals": METAL_SYMBOLS
     }
