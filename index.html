@@ -1,328 +1,20 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI Live Signal Bot V26</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI Live Signal Bot V27.1</title>
+<style>:root{--bg:#071018;--p:#0d1924;--l:#203040;--t:#eaf3fb;--m:#8ea4b8;--g:#43e58b;--r:#ff5f6d;--y:#ffd166;--b:#62a8ff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font-family:Arial}.wrap{max-width:1400px;margin:auto;padding:16px}.title{font-size:25px;font-weight:800}.sub{color:var(--m);margin:4px 0 14px}.panel{background:var(--p);border:1px solid var(--l);border-radius:14px;padding:13px}.controls{display:grid;grid-template-columns:1.2fr 1fr 1fr .8fr 1fr;gap:8px}.controls label{display:block;font-size:12px;color:var(--m);margin-bottom:4px}select,button{width:100%;background:#101f2c;color:var(--t);border:1px solid #294052;border-radius:9px;padding:10px}button{cursor:pointer;font-weight:800}.status{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:13px}.badge{padding:5px 8px;border:1px solid var(--l);border-radius:999px}.live{color:var(--g);font-weight:800}.bad{color:var(--r);font-weight:800}.grid{display:grid;grid-template-columns:1fr 2fr;gap:12px;margin-top:12px}.signal{font-size:32px;font-weight:900;margin:4px 0}.buy{color:var(--g)}.sell{color:var(--r)}.none{color:var(--y)}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}.metric,.check{border:1px solid var(--l);border-radius:9px;padding:9px}.metric{font-size:12px;color:var(--m)}.metric b{display:block;color:var(--t);font-size:16px;margin-top:4px}.trade{border-color:#34516b}.trade.entry b{color:var(--b)}.trade.sl b{color:var(--r)}.trade.tp b{color:var(--g)}.trade.rr b{color:var(--y)}.checks{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.ok{color:var(--g)}.log{height:220px;overflow:auto;white-space:pre;font:12px monospace;color:#a9c0d4}canvas{width:100%;height:520px;background:#08131d;border-radius:10px;display:block}.levels{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;font-size:12px;color:var(--m)}.level{padding:5px 8px;border:1px solid var(--l);border-radius:8px}.level b{color:var(--t)}@media(max-width:900px){.grid{grid-template-columns:1fr}.controls{grid-template-columns:1fr 1fr}.metrics{grid-template-columns:1fr 1fr}canvas{height:430px}}</style></head><body><div class="wrap"><div class="title">AI Live Signal Bot V27.1 — Multi Source</div><div class="sub">8 real public crypto feeds + large source registry • AUTO TRADE OFF</div>
 
-<style>
-:root{
---bg:#071018;
---p:#0d1924;
---l:#203040;
---t:#eaf3fb;
---m:#8ea4b8;
---g:#43e58b;
---r:#ff5f6d;
---y:#ffd166;
---b:#62a8ff
-}
-
-*{
-box-sizing:border-box
-}
-
-body{
-margin:0;
-background:var(--bg);
-color:var(--t);
-font-family:Arial
-}
-
-.wrap{
-max-width:1400px;
-margin:auto;
-padding:16px
-}
-
-.title{
-font-size:25px;
-font-weight:800
-}
-
-.sub{
-color:var(--m);
-margin:4px 0 14px
-}
-
-.panel{
-background:var(--p);
-border:1px solid var(--l);
-border-radius:14px;
-padding:13px
-}
-
-.controls{
-display:grid;
-grid-template-columns:1.2fr 1fr 1fr .8fr 1fr;
-gap:8px
-}
-
-.controls label{
-display:block;
-font-size:12px;
-color:var(--m);
-margin-bottom:4px
-}
-
-select,
-button{
-width:100%;
-background:#101f2c;
-color:var(--t);
-border:1px solid #294052;
-border-radius:9px;
-padding:10px
-}
-
-button{
-cursor:pointer;
-font-weight:800
-}
-
-.status{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-margin-top:10px;
-font-size:13px
-}
-
-.badge{
-padding:5px 8px;
-border:1px solid var(--l);
-border-radius:999px
-}
-
-.live{
-color:var(--g);
-font-weight:800
-}
-
-.bad{
-color:var(--r);
-font-weight:800
-}
-
-.grid{
-display:grid;
-grid-template-columns:1fr 2fr;
-gap:12px;
-margin-top:12px
-}
-
-.signal{
-font-size:32px;
-font-weight:900;
-margin:4px 0
-}
-
-.buy{
-color:var(--g)
-}
-
-.sell{
-color:var(--r)
-}
-
-.none{
-color:var(--y)
-}
-
-.metrics{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:7px;
-margin-top:10px
-}
-
-.metric,
-.check{
-border:1px solid var(--l);
-border-radius:9px;
-padding:9px
-}
-
-.metric{
-font-size:12px;
-color:var(--m)
-}
-
-.metric b{
-display:block;
-color:var(--t);
-font-size:16px;
-margin-top:4px
-}
-
-.trade{
-border-color:#34516b
-}
-
-.trade.entry b{
-color:var(--b)
-}
-
-.trade.sl b{
-color:var(--r)
-}
-
-.trade.tp b{
-color:var(--g)
-}
-
-.trade.rr b{
-color:var(--y)
-}
-
-.checks{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:6px;
-margin-top:8px
-}
-
-.ok{
-color:var(--g)
-}
-
-.log{
-height:220px;
-overflow:auto;
-white-space:pre;
-font:12px monospace;
-color:#a9c0d4
-}
-
-canvas{
-width:100%;
-height:520px;
-background:#08131d;
-border-radius:10px;
-display:block
-}
-
-.levels{
-display:flex;
-gap:7px;
-flex-wrap:wrap;
-margin-top:8px;
-font-size:12px;
-color:var(--m)
-}
-
-.level{
-padding:5px 8px;
-border:1px solid var(--l);
-border-radius:8px
-}
-
-.level b{
-color:var(--t)
-}
-
-@media(max-width:900px){
-
-.grid{
-grid-template-columns:1fr
-}
-
-.controls{
-grid-template-columns:1fr 1fr
-}
-
-.metrics{
-grid-template-columns:1fr 1fr
-}
-
-canvas{
-height:430px
-}
-
-}
-</style>
-</head>
-
-<body>
-
-<div class="wrap">
-
-<div class="title">
-AI Live Signal Bot V26 — Multi Source
-</div>
-
-<div class="sub">
-8 real public crypto feeds + large source registry • AUTO TRADE OFF
-</div>
-
-<div class="panel">
-
-<div class="controls">
-
-<div>
-<label>Source</label>
-<select id="source"></select>
-</div>
-
-<div>
-<label>Market</label>
-<select id="market">
-<option>Crypto</option>
-<option>Forex / CFD</option>
-<option>Forex / Metals</option>
-</select>
-</div>
-
-<div>
-<label>Symbol</label>
-<select id="symbol"></select>
-</div>
-
-<div>
-<label>Timeframe</label>
-<select id="tf">
-<option>1m</option>
-<option>5m</option>
-<option>15m</option>
-<option>30m</option>
-<option>1h</option>
-<option>2h</option>
-<option>4h</option>
-</select>
-</div>
-
-<div>
-<label>Action</label>
-<button id="connect">CONNECT LIVE</button>
-</div>
-
+<div class="panel"><div class="controls">
+<div><label>Source</label><select id="source"></select></div>
+<div><label>Market</label><select id="market"><option>Crypto</option><option>Forex / CFD</option><option>Forex / Metals</option></select></div>
+<div><label>Symbol</label><select id="symbol"></select></div>
+<div><label>Timeframe</label><select id="tf"><option>1m</option><option>5m</option><option>15m</option><option>30m</option><option>1h</option><option>2h</option><option>4h</option></select></div>
+<div><label>Action</label><button id="connect">CONNECT LIVE</button></div>
 </div>
 
 <div class="status">
-
-<span class="badge">
-Feed:
-<b id="feed">OFF</b>
-</span>
-
-<span class="badge">
-Source:
-<b id="ss">—</b>
-</span>
-
-<span class="badge">
-Closed:
-<b id="count">0</b>
-</span>
-
-<span class="badge">
-AUTO TRADE:
-<b>OFF</b>
-</span>
-
-</div>
-</div>
-
+<span class="badge">Feed: <b id="feed">OFF</b></span>
+<span class="badge">Source: <b id="ss">—</b></span>
+<span class="badge">Closed: <b id="count">0</b></span>
+<span class="badge">AUTO TRADE: <b>OFF</b></span>
+</div></div>
 
 <div class="grid">
 
@@ -330,185 +22,65 @@ AUTO TRADE:
 
 <div class="panel">
 
-<div style="color:var(--m);font-size:12px">
-AI SIGNAL
-</div>
+<div style="color:var(--m);font-size:12px">AI SIGNAL</div>
 
-<div id="signal" class="signal none">
-NO TRADE
-</div>
+<div id="signal" class="signal none">NO TRADE</div>
 
-<div id="reason" style="color:var(--m)">
-Waiting…
-</div>
+<div id="reason" style="color:var(--m)">Waiting…</div>
 
 <div class="metrics">
 
-<div class="metric">
-Confidence
-<b id="conf">0%</b>
-</div>
+<div class="metric">Confidence<b id="conf">0%</b></div>
+<div class="metric">Confirmations<b id="confirm">0/6</b></div>
+<div class="metric">Price<b id="price">—</b></div>
+<div class="metric">RSI 14<b id="rsi">—</b></div>
+<div class="metric">ATR 14<b id="atr">—</b></div>
+<div class="metric">EMA 50<b id="e50">—</b></div>
+<div class="metric">EMA 200<b id="e200">—</b></div>
+<div class="metric">Trend<b id="trend">—</b></div>
+<div class="metric">Momentum<b id="mom">—</b></div>
 
-<div class="metric">
-Confirmations
-<b id="confirm">0/6</b>
-</div>
-
-<div class="metric">
-Price
-<b id="price">—</b>
-</div>
-
-<div class="metric">
-RSI 14
-<b id="rsi">—</b>
-</div>
-
-<div class="metric">
-ATR 14
-<b id="atr">—</b>
-</div>
-
-<div class="metric">
-EMA 50
-<b id="e50">—</b>
-</div>
-
-<div class="metric">
-EMA 200
-<b id="e200">—</b>
-</div>
-
-<div class="metric">
-Trend
-<b id="trend">—</b>
-</div>
-
-<div class="metric">
-Momentum
-<b id="mom">—</b>
-</div>
-
-<div class="metric trade entry">
-ENTRY
-<b id="entry">—</b>
-</div>
-
-<div class="metric trade sl">
-STOP LOSS
-<b id="sl">—</b>
-</div>
-
-<div class="metric trade tp">
-TP1
-<b id="tp1">—</b>
-</div>
-
-<div class="metric trade tp">
-TP2
-<b id="tp2">—</b>
-</div>
-
-<div class="metric trade rr">
-R:R
-<b id="rr">—</b>
-</div>
+<div class="metric trade entry">ENTRY<b id="entry">—</b></div>
+<div class="metric trade sl">STOP LOSS<b id="sl">—</b></div>
+<div class="metric trade tp">TP1<b id="tp1">—</b></div>
+<div class="metric trade tp">TP2<b id="tp2">—</b></div>
+<div class="metric trade rr">R:R<b id="rr">—</b></div>
 
 </div>
-
 
 <div class="levels">
-
-<span class="level">
-Entry:
-<b id="entrySmall">—</b>
-</span>
-
-<span class="level">
-SL:
-<b id="slSmall">—</b>
-</span>
-
-<span class="level">
-TP1:
-<b id="tp1Small">—</b>
-</span>
-
-<span class="level">
-TP2:
-<b id="tp2Small">—</b>
-</span>
-
+<span class="level">Entry: <b id="entrySmall">—</b></span>
+<span class="level">SL: <b id="slSmall">—</b></span>
+<span class="level">TP1: <b id="tp1Small">—</b></span>
+<span class="level">TP2: <b id="tp2Small">—</b></span>
 </div>
-
 
 <div class="checks">
-
-<div id="c1" class="check">
-EMA 50/200: —
-</div>
-
-<div id="c2" class="check">
-RSI: —
-</div>
-
-<div id="c3" class="check">
-BOS: —
-</div>
-
-<div id="c4" class="check">
-Liquidity: —
-</div>
-
-<div id="c5" class="check">
-FVG: —
-</div>
-
-<div id="c6" class="check">
-Momentum: —
+<div id="c1" class="check">EMA 50/200: —</div>
+<div id="c2" class="check">RSI: —</div>
+<div id="c3" class="check">BOS: —</div>
+<div id="c4" class="check">Liquidity: —</div>
+<div id="c5" class="check">FVG: —</div>
+<div id="c6" class="check">Momentum: —</div>
 </div>
 
 </div>
-
-</div>
-
 
 <div class="panel" style="margin-top:12px">
-
 <b>Source Registry</b>
-
-<div
-id="registry"
-class="log"
-style="margin-top:8px">
+<div id="registry" class="log" style="margin-top:8px"></div>
 </div>
 
 </div>
-
-</div>
-
 
 <div class="panel">
-
 <b>Live Chart — closed candles</b>
-
-<canvas
-id="chart"
-width="1100"
-height="520">
-</canvas>
-
-<div
-id="info"
-style="color:var(--m);font-size:12px;margin-top:7px">
+<canvas id="chart" width="1100" height="520"></canvas>
+<div id="info" style="color:var(--m);font-size:12px;margin-top:7px"></div>
 </div>
 
 </div>
-
 </div>
-
-</div>
-
 
 <script>
 
@@ -525,11 +97,9 @@ tradeLevels=null;
 
 async function init(){
 
-sources=
-(await (await fetch('/api/sources')).json()).sources;
+sources=(await (await fetch('/api/sources')).json()).sources;
 
-ins=
-await (await fetch('/api/instruments')).json();
+ins=await (await fetch('/api/instruments')).json();
 
 $('source').innerHTML=
 sources.map(x=>
@@ -560,19 +130,20 @@ connect()
 
 
 function src(){
+
 return sources.find(
 x=>x.id===$('source').value
 )
+
 }
 
 
 function symbols(){
 
-let s=src();
+let s=src(),
+m=$('market').value,
 
-let m=$('market').value;
-
-let a=
+a=
 m==='Crypto'
 ?
 (ins.crypto[s?.id]||['BTCUSDT','ETHUSDT'])
@@ -587,13 +158,15 @@ $('symbol').innerHTML=
 a.map(x=>`<option>${x}</option>`).join('');
 
 $('ss').textContent=s?.status||'—'
+
 }
 
 
 function registry(){
 
 $('registry').textContent=
-sources.map((x,i)=>
+sources.map(
+(x,i)=>
 `${String(i+1).padStart(2,'0')}. ${x.name.padEnd(24)} ${x.category.padEnd(16)} ${x.status}`
 ).join('\n')
 
@@ -603,25 +176,32 @@ sources.map((x,i)=>
 function off(){
 
 if(ws){
+
 try{
 ws.close()
 }catch(e){}
+
 ws=null
 }
 
 if(recon){
+
 clearTimeout(recon);
 recon=null
+
 }
 
 $('feed').textContent='OFF';
+
 $('feed').className=''
+
 }
 
 
 function live(){
 
 $('feed').textContent='LIVE';
+
 $('feed').className='live'
 
 }
@@ -641,8 +221,7 @@ tradeLevels=null;
 'slSmall',
 'tp1Small',
 'tp2Small'
-]
-.forEach(
+].forEach(
 id=>$(id).textContent='—'
 )
 
@@ -677,8 +256,8 @@ $('feed').className='bad';
 draw();
 
 return
-}
 
+}
 
 try{
 
@@ -704,7 +283,7 @@ else if(cur.id==='bitget')
 await bitget();
 
 else if(cur.id==='mexc')
-await mexc();
+await mexc()
 
 }
 catch(e){
@@ -816,8 +395,10 @@ closed:true
 };
 
 ws.onclose=()=>{
+
 if(cur?.id==='binance')
 recon=setTimeout(connect,2500)
+
 }
 
 }
@@ -890,8 +471,10 @@ closed:true
 };
 
 ws.onclose=()=>{
+
 if(cur?.id==='bybit')
 recon=setTimeout(connect,2500)
+
 }
 
 }
@@ -979,8 +562,10 @@ closed:true
 };
 
 ws.onclose=()=>{
+
 if(cur?.id==='okx')
 recon=setTimeout(connect,2500)
+
 }
 
 }
@@ -1069,8 +654,10 @@ closed:true
 };
 
 ws.onclose=()=>{
+
 if(cur?.id==='coinbase')
 recon=setTimeout(connect,2500)
+
 }
 
 }
@@ -1151,8 +738,10 @@ closed:x.confirmed!==false
 };
 
 ws.onclose=()=>{
+
 if(cur?.id==='kraken')
 recon=setTimeout(connect,2500)
+
 }
 
 }
@@ -1259,9 +848,11 @@ closed:x.w!==false
 };
 
 ws.onclose=()=>{
+
 if(cur?.id==='gateio')
 recon=setTimeout(connect,2500)
-}
+
+};
 
 }
 
@@ -1358,9 +949,11 @@ closed:true
 };
 
 ws.onclose=()=>{
+
 if(cur?.id==='bitget')
 recon=setTimeout(connect,2500)
-}
+
+};
 
 }
 
@@ -1461,9 +1054,11 @@ closed:true
 };
 
 ws.onclose=()=>{
+
 if(cur?.id==='mexc')
 recon=setTimeout(connect,2500)
-}
+
+};
 
 }
 
@@ -1536,7 +1131,7 @@ return null;
 
 let t=[];
 
-for(let i=1;i<a.length;i++){
+for(let i=1;i<a.length;i++)
 
 t.push(
 Math.max(
@@ -1544,9 +1139,7 @@ a[i].h-a[i].l,
 Math.abs(a[i].h-a[i-1].c),
 Math.abs(a[i].l-a[i-1].c)
 )
-)
-
-}
+);
 
 return t
 .slice(-n)
@@ -1558,10 +1151,10 @@ return t
 function setTradeLevels(side,entry,av){
 
 if(
-!entry||
-!av||
-av<=0||
-side==='NO TRADE'
+(side!=='BUY'&&side!=='SELL') ||
+!Number.isFinite(entry) ||
+!Number.isFinite(av) ||
+av<=0
 ){
 
 resetLevels();
@@ -1570,24 +1163,27 @@ return
 
 }
 
-let sl,tp1,tp2;
+let risk=1.5*av,
+sl,
+tp1,
+tp2;
 
 if(side==='BUY'){
 
-sl=entry-1.5*av;
+sl=entry-risk;
 
-tp1=entry+1.5*av;
+tp1=entry+risk;
 
-tp2=entry+3*av
+tp2=entry+2*risk
 
 }
 else{
 
-sl=entry+1.5*av;
+sl=entry+risk;
 
-tp1=entry-1.5*av;
+tp1=entry-risk;
 
-tp2=entry-3*av
+tp2=entry-2*risk
 
 }
 
@@ -1602,15 +1198,24 @@ rr2:2
 };
 
 $('entry').textContent=fmt(entry);
+
 $('sl').textContent=fmt(sl);
+
 $('tp1').textContent=fmt(tp1);
+
 $('tp2').textContent=fmt(tp2);
+
 $('rr').textContent='1:1 / 1:2';
 
 $('entrySmall').textContent=fmt(entry);
+
 $('slSmall').textContent=fmt(sl);
+
 $('tp1Small').textContent=fmt(tp1);
-$('tp2Small').textContent=fmt(tp2)
+
+$('tp2Small').textContent=fmt(tp2);
+
+draw();
 
 }
 
@@ -1627,9 +1232,9 @@ rv=rsi(cl),
 av=atr(cs),
 a=cs.at(-1),
 p=cs.at(-2),
-p3=cs.at(-3),
+p3=cs.at(-3);
 
-bull=e50>e200,
+let bull=e50>e200,
 bear=e50<e200,
 
 mb=
@@ -1638,9 +1243,9 @@ p.c>p3.c,
 
 ms=
 a.c<p.c&&
-p.c<p3.c,
+p.c<p3.c;
 
-rr=cs.slice(-12,-2),
+let rr=cs.slice(-12,-2),
 
 hi=Math.max(
 ...rr.map(x=>x.h)
@@ -1648,9 +1253,9 @@ hi=Math.max(
 
 lo=Math.min(
 ...rr.map(x=>x.l)
-),
+);
 
-lb=
+let lb=
 a.l<lo&&
 a.c>lo,
 
@@ -1676,7 +1281,6 @@ p3.h<a.l,
 fs=
 p3.l>a.h;
 
-
 let buyChecks=[
 bull,
 rv>=50&&rv<=68,
@@ -1695,6 +1299,15 @@ ls||fs,
 a.c<e50
 ];
 
+let weights=[
+20,
+15,
+15,
+20,
+15,
+15
+];
+
 let buyCount=
 buyChecks.filter(Boolean).length;
 
@@ -1702,52 +1315,72 @@ let sellCount=
 sellChecks.filter(Boolean).length;
 
 let buy=
-(bull?20:0)+
-(rv>=50&&rv<=68?15:0)+
-(mb?15:0)+
-(bosb?20:0)+
-((lb||fb)?15:0)+
-(a.c>e50?15:0);
+buyChecks.reduce(
+(s,v,i)=>
+s+(v?weights[i]:0),
+0
+);
 
 let sell=
-(bear?20:0)+
-(rv<=50&&rv>=32?15:0)+
-(ms?15:0)+
-(boss?20:0)+
-((ls||fs)?15:0)+
-(a.c<e50?15:0);
-
-let side='NO TRADE';
-
-let conf=
-Math.max(buy,sell);
-
-let confirmations=
-Math.max(
-buyCount,
-sellCount
+sellChecks.reduce(
+(s,v,i)=>
+s+(v?weights[i]:0),
+0
 );
+
+let side='NO TRADE',
+conf=0,
+checks=buyChecks,
+confirmations=buyCount;
 
 if(
 buyCount>=5&&
-buy>=75
+buy>=75&&
+buy>=sell
 ){
 
 side='BUY';
-conf=buy
+
+conf=buy;
+
+checks=buyChecks;
+
+confirmations=buyCount
 
 }
-
-if(
+else if(
 sellCount>=5&&
-sell>=75
+sell>=75&&
+sell>buy
 ){
 
 side='SELL';
+
+conf=sell;
+
+checks=sellChecks;
+
+confirmations=sellCount
+
+}
+else if(sell>buy){
+
+checks=sellChecks;
+
+confirmations=sellCount;
+
 conf=sell
 
 }
+else{
 
+checks=buyChecks;
+
+confirmations=buyCount;
+
+conf=buy
+
+}
 
 $('signal').textContent=side;
 
@@ -1765,6 +1398,9 @@ side==='SELL'
 
 $('conf').textContent=
 Math.round(conf)+'%';
+
+$('confirm').textContent=
+confirmations+'/6';
 
 $('price').textContent=
 fmt(a.c);
@@ -1799,73 +1435,69 @@ ms
 :
 'MIXED';
 
+if(
+side==='BUY'||
+side==='SELL'
+)
+
 setTradeLevels(
 side,
 a.c,
 av
 );
 
-$('confirm').textContent=
-confirmations+'/6';
+else
+resetLevels();
+
+let prefix=
+side==='SELL'
+?
+'SELL'
+:
+'BUY';
 
 chk(
 'c1',
-bull||bear,
-`EMA 50/200: ${
-bull?'BULLISH':
-bear?'BEARISH':
-'NEUTRAL'
-}`
+checks[0],
+`1. EMA 50/200: ${checks[0]?'✓':'✕'} ${prefix}`
 );
 
 chk(
 'c2',
-true,
-`RSI: ${rv.toFixed(2)}`
+checks[1],
+`2. RSI 14: ${checks[1]?'✓':'✕'} ${rv.toFixed(2)}`
 );
 
 chk(
 'c3',
-bosb||boss,
-`BOS: ${
-bosb?'BULL':
-boss?'BEAR':
-'WAIT'
-}`
+checks[2],
+`3. Momentum: ${checks[2]?'✓':'✕'} ${prefix}`
 );
 
 chk(
 'c4',
-lb||ls,
-`Liquidity: ${
-lb?'BULL':
-ls?'BEAR':
-'WAIT'
-}`
+checks[3],
+`4. BOS: ${checks[3]?'✓':'✕'} ${prefix}`
 );
 
 chk(
 'c5',
-fb||fs,
-`FVG: ${
-fb?'BULL':
-fs?'BEAR':
-'WAIT'
-}`
+checks[4],
+`5. Liquidity/FVG: ${checks[4]?'✓':'✕'} ${prefix}`
 );
 
 chk(
 'c6',
-mb||ms,
-`Momentum: ${
-mb?'BULLISH':
-ms?'BEARISH':
-'MIXED'
-}`
+checks[5],
+`6. Price/EMA: ${checks[5]?'✓':'✕'} ${prefix}`
 );
 
 $('reason').textContent=
-`${side} • ${confirmations}/6 confirmations • EMA + RSI + momentum + BOS/liquidity/FVG • threshold 75%`
+side==='NO TRADE'
+?
+`${prefix} candidate • ${confirmations}/6 confirmations • ${Math.round(conf)}% • Need 5/6 + 75% for a signal`
+:
+`${side} • ${confirmations}/6 confirmations • ${Math.round(conf)}% • All six checks are aligned to this signal`;
 
 }
 
@@ -1923,24 +1555,21 @@ H
 if(!cs.length)
 return;
 
-let a=cs.slice(-100);
+let a=cs.slice(-100),
 
-let mn=
-Math.min(
+mn=Math.min(
 ...a.map(z=>z.l)
-);
+),
 
-let mx=
-Math.max(
+mx=Math.max(
 ...a.map(z=>z.h)
-);
+),
 
-let pad=35;
+pad=35;
 
 if(tradeLevels){
 
-mn=
-Math.min(
+mn=Math.min(
 mn,
 tradeLevels.sl,
 tradeLevels.tp1,
@@ -1948,8 +1577,7 @@ tradeLevels.tp2,
 tradeLevels.entry
 );
 
-mx=
-Math.max(
+mx=Math.max(
 mx,
 tradeLevels.sl,
 tradeLevels.tp1,
@@ -1963,24 +1591,18 @@ let py=
 v=>
 H-pad-
 (v-mn)/(mx-mn||1)*
-(H-pad*2);
+(H-pad*2),
 
-let st=
-W/a.length;
+st=W/a.length,
 
-let bw=
-Math.max(
+bw=Math.max(
 3,
 st*.62
 );
 
 x.strokeStyle='#1b2b38';
 
-for(
-let i=0;
-i<6;
-i++
-){
+for(let i=0;i<6;i++){
 
 let y=
 pad+
@@ -2002,19 +1624,15 @@ x.stroke()
 
 }
 
-
 a.forEach(
 (z,i)=>{
 
 let xx=
 i*st+
-st/2;
+st/2,
 
-let yo=
-py(z.o);
-
-let yc=
-py(z.c);
+yo=py(z.o),
+yc=py(z.c);
 
 x.strokeStyle=
 z.c>=z.o
@@ -2023,8 +1641,7 @@ z.c>=z.o
 :
 '#ff5f6d';
 
-x.fillStyle=
-x.strokeStyle;
+x.fillStyle=x.strokeStyle;
 
 x.beginPath();
 
@@ -2052,7 +1669,6 @@ Math.abs(yc-yo)
 
 }
 );
-
 
 if(tradeLevels){
 
@@ -2125,33 +1741,24 @@ x.fillText(
 `${L.name} ${fmt(L.value)}`,
 8,
 Math.max(14,y-5)
-)
+);
 
 }
 );
 
-x.restore()
+x.restore();
 
 }
-
 
 let q=a.at(-1);
 
 $('info').textContent=
-`${cur?.name||''} • ${$('symbol').value} • ${$('tf').value} • ${new Date(q.t).toLocaleString()} • ${fmt(q.c)}${
-tradeLevels
-?
-' • '+tradeLevels.side+' levels active'
-:
-''
-}`
+`${cur?.name||''} • ${$('symbol').value} • ${$('tf').value} • ${new Date(q.t).toLocaleString()} • ${fmt(q.c)}${tradeLevels?' • '+tradeLevels.side+' levels active':''}`;
 
 }
-
 
 init();
 
 </script>
-
 </body>
 </html>
