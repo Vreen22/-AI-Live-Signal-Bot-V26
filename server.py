@@ -6,7 +6,7 @@ from fastapi.responses import FileResponse
 BASE = Path(__file__).resolve().parent
 INDEX = BASE / "index.html"
 
-app = FastAPI(title="AI Live Signal Bot V27.5 - Trend-First Live 8 Sources")
+app = FastAPI(title="AI Live Signal Bot V27 - Live 8 Sources")
 
 app.add_middleware(
     CORSMiddleware,
@@ -54,35 +54,35 @@ SOURCES = [
 ]
 
 CRYPTO_SYMBOLS = {
-    "binance": [
+    "binance":[
         "BTCUSDT","ETHUSDT","BNBUSDT","SOLUSDT","XRPUSDT",
         "ADAUSDT","DOGEUSDT","AVAXUSDT","LINKUSDT","LTCUSDT"
     ],
-    "bybit": [
+    "bybit":[
         "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT",
         "BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"
     ],
-    "okx": [
+    "okx":[
         "BTC-USDT","ETH-USDT","SOL-USDT","XRP-USDT","DOGE-USDT",
         "BNB-USDT","ADA-USDT","AVAX-USDT","LINK-USDT"
     ],
-    "coinbase": [
+    "coinbase":[
         "BTC-USD","ETH-USD","SOL-USD","XRP-USD","DOGE-USD",
         "ADA-USD","AVAX-USD","LINK-USD"
     ],
-    "kraken": [
+    "kraken":[
         "BTC/USD","ETH/USD","SOL/USD","XRP/USD","DOGE/USD",
         "ADA/USD","AVAX/USD","LINK/USD"
     ],
-    "bitget": [
+    "bitget":[
         "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT",
         "BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"
     ],
-    "gateio": [
+    "gateio":[
         "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT",
         "BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"
     ],
-    "mexc": [
+    "mexc":[
         "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT",
         "BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"
     ],
@@ -93,10 +93,7 @@ FOREX_SYMBOLS = [
     "USDCHF","NZDUSD","EURGBP","EURJPY","GBPJPY"
 ]
 
-METAL_SYMBOLS = [
-    "XAUUSD",
-    "XAGUSD"
-]
+METAL_SYMBOLS = ["XAUUSD","XAGUSD"]
 
 
 @app.get("/")
@@ -108,7 +105,7 @@ async def home():
 async def health():
     return {
         "ok": True,
-        "app": "AI Live Signal Bot V27.5",
+        "app": "AI Live Signal Bot V27",
         "auto_trade": False,
         "live_adapters": [
             "binance",
@@ -125,9 +122,7 @@ async def health():
 
 @app.get("/api/sources")
 async def sources():
-    return {
-        "sources": SOURCES
-    }
+    return {"sources": SOURCES}
 
 
 @app.get("/api/instruments")
