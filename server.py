@@ -1,18 +1,12 @@
 from pathlib import Path
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
-
 BASE = Path(__file__).resolve().parent
 INDEX = BASE / "index.html"
 
-
-app = FastAPI(
-    title="AI Live Signal Bot V28 - Live 8 Sources"
-)
-
+app = FastAPI(title="AI Live Signal Bot V29 - Live 8 Sources")
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,7 +15,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 SOURCES = [
     {"id":"binance","name":"Binance","category":"Crypto","status":"LIVE"},
@@ -60,55 +53,46 @@ SOURCES = [
     {"id":"twelvedata","name":"Twelve Data","category":"Forex / Metals","status":"API KEY REQUIRED"},
 ]
 
-
 CRYPTO_SYMBOLS = {
-    "binance":[
+    "binance": [
         "BTCUSDT","ETHUSDT","BNBUSDT","SOLUSDT",
         "XRPUSDT","ADAUSDT","DOGEUSDT","AVAXUSDT",
         "LINKUSDT","LTCUSDT"
     ],
-
-    "bybit":[
+    "bybit": [
         "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT",
         "DOGEUSDT","BNBUSDT","ADAUSDT","AVAXUSDT",
         "LINKUSDT"
     ],
-
-    "okx":[
+    "okx": [
         "BTC-USDT","ETH-USDT","SOL-USDT","XRP-USDT",
         "DOGE-USDT","BNB-USDT","ADA-USDT",
         "AVAX-USDT","LINK-USDT"
     ],
-
-    "coinbase":[
+    "coinbase": [
         "BTC-USD","ETH-USD","SOL-USD","XRP-USD",
         "DOGE-USD","ADA-USD","AVAX-USD","LINK-USD"
     ],
-
-    "kraken":[
+    "kraken": [
         "BTC/USD","ETH/USD","SOL/USD","XRP/USD",
         "DOGE/USD","ADA/USD","AVAX/USD","LINK/USD"
     ],
-
-    "bitget":[
+    "bitget": [
         "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT",
         "DOGEUSDT","BNBUSDT","ADAUSDT","AVAXUSDT",
         "LINKUSDT"
     ],
-
-    "gateio":[
+    "gateio": [
         "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT",
         "DOGEUSDT","BNBUSDT","ADAUSDT","AVAXUSDT",
         "LINKUSDT"
     ],
-
-    "mexc":[
+    "mexc": [
         "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT",
         "DOGEUSDT","BNBUSDT","ADAUSDT","AVAXUSDT",
         "LINKUSDT"
     ],
 }
-
 
 FOREX_SYMBOLS = [
     "EURUSD",
@@ -120,13 +104,12 @@ FOREX_SYMBOLS = [
     "NZDUSD",
     "EURGBP",
     "EURJPY",
-    "GBPJPY"
+    "GBPJPY",
 ]
-
 
 METAL_SYMBOLS = [
     "XAUUSD",
-    "XAGUSD"
+    "XAGUSD",
 ]
 
 
@@ -137,10 +120,9 @@ async def home():
 
 @app.get("/api/health")
 async def health():
-
     return {
         "ok": True,
-        "app": "AI Live Signal Bot V28",
+        "app": "AI Live Signal Bot V29",
         "auto_trade": False,
         "live_adapters": [
             "binance",
@@ -164,7 +146,6 @@ async def sources():
 
 @app.get("/api/instruments")
 async def instruments():
-
     return {
         "crypto": CRYPTO_SYMBOLS,
         "forex": FOREX_SYMBOLS,
