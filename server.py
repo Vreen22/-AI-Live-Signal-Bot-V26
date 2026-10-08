@@ -54,65 +54,65 @@ SOURCES = [
 ]
 
 CRYPTO_SYMBOLS = {
-    "binance": [
+    "binance":[
         "BTCUSDT","ETHUSDT","BNBUSDT","SOLUSDT","XRPUSDT",
         "ADAUSDT","DOGEUSDT","AVAXUSDT","LINKUSDT","LTCUSDT"
     ],
-    "bybit": [
+    "bybit":[
         "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT",
         "BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"
     ],
-    "okx": [
-        "BTC-USDT","ETH-USDT","SOL-USDT","XRP-USDT","DOGE-USDT",
-        "BNB-USDT","ADA-USDT","AVAX-USDT","LINK-USDT"
+    "okx":[
+        "BTC-USDT","ETH-USDT","SOL-USDT","XRP-USDT",
+        "DOGE-USDT","BNB-USDT","ADA-USDT","AVAX-USDT","LINK-USDT"
     ],
-    "coinbase": [
+    "coinbase":[
         "BTC-USD","ETH-USD","SOL-USD","XRP-USD",
         "DOGE-USD","ADA-USD","AVAX-USD","LINK-USD"
     ],
-    "kraken": [
+    "kraken":[
         "BTC/USD","ETH/USD","SOL/USD","XRP/USD",
         "DOGE/USD","ADA/USD","AVAX/USD","LINK/USD"
     ],
-    "bitget": [
+    "bitget":[
         "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT",
         "BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"
     ],
-    "gateio": [
+    "gateio":[
         "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT",
         "BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"
     ],
-    "mexc": [
+    "mexc":[
         "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT","DOGEUSDT",
         "BNBUSDT","ADAUSDT","AVAXUSDT","LINKUSDT"
     ],
-    "kucoin": [
-        "BTC-USDT","ETH-USDT","SOL-USDT","XRP-USDT","DOGE-USDT",
-        "BNB-USDT","ADA-USDT","AVAX-USDT","LINK-USDT"
+    "kucoin":[
+        "BTC-USDT","ETH-USDT","SOL-USDT","XRP-USDT",
+        "DOGE-USDT","BNB-USDT","ADA-USDT","AVAX-USDT","LINK-USDT"
     ],
-    "bitfinex": [
+    "bitfinex":[
         "BTCUSD","ETHUSD","SOLUSD","XRPUSD","DOGEUSD","LTCUSD"
     ],
-    "cryptocom": [
+    "cryptocom":[
         "BTC_USDT","ETH_USDT","SOL_USDT","XRP_USDT",
         "DOGE_USDT","BNB_USDT","ADA_USDT"
     ],
-    "hyperliquid": [
+    "hyperliquid":[
         "BTC","ETH","SOL","XRP","DOGE","AVAX","LINK"
     ],
-    "htx": [
+    "htx":[
         "btcusdt","ethusdt","solusdt","xrpusdt",
         "dogeusdt","bnbusdt","adausdt"
     ],
-    "upbit": [
+    "upbit":[
         "USDT-BTC","USDT-ETH","USDT-SOL",
         "USDT-XRP","USDT-DOGE","USDT-ADA"
     ],
-    "poloniex": [
+    "poloniex":[
         "BTC_USDT","ETH_USDT","SOL_USDT",
         "XRP_USDT","DOGE_USDT","BNB_USDT"
     ],
-    "coinex": [
+    "coinex":[
         "BTCUSDT","ETHUSDT","SOLUSDT","XRPUSDT",
         "DOGEUSDT","BNBUSDT","ADAUSDT"
     ],
@@ -123,7 +123,10 @@ FOREX_SYMBOLS = [
     "USDCHF","NZDUSD","EURGBP","EURJPY","GBPJPY"
 ]
 
-METAL_SYMBOLS = ["XAUUSD","XAGUSD"]
+METAL_SYMBOLS = [
+    "XAUUSD",
+    "XAGUSD"
+]
 
 
 @app.get("/")
@@ -166,7 +169,9 @@ async def health():
 
 @app.get("/api/sources")
 async def sources():
-    return {"sources": SOURCES}
+    return {
+        "sources": SOURCES
+    }
 
 
 @app.get("/api/trading-config")
